@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aidra — Built by our community, for our community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1B3A2D;--green-mid:#2A5940;--green-light:#3D7A58;
+  --cream:#F7F3EE;--terracotta:#E8956D;--terracotta-dark:#C97548;
+  --text:#2C2C2C;--muted:#6B6B6B;--white:#FFFFFF;
+  --border:#E4DDD5;--sage:#EAF0EB;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* LOGO */
+.logo-mark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.logo-rings{width:38px;height:38px;flex-shrink:0}
+.logo-name{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:-0.01em;line-height:1}
+.logo-name-dark{color:var(--green)}
+.logo-name-light{color:var(--white)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(247,243,238,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{background:var(--terracotta);color:var(--white);border:none;padding:10px 24px;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none}
+.nav-cta:hover{background:var(--terracotta-dark);transform:translateY(-1px)}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* SHARED */
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:14px}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,44px);color:var(--green);line-height:1.15;margin-bottom:16px;letter-spacing:-0.01em}
+.section-body{font-size:16px;color:var(--muted);line-height:1.8}
+.btn-primary{background:var(--terracotta);color:var(--white);border:none;padding:15px 32px;border-radius:100px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block}
+.btn-primary:hover{background:var(--terracotta-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,149,109,0.3)}
+.btn-ghost-light{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.35);padding:15px 32px;border-radius:100px;font-size:15px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block}
+.btn-ghost-light:hover{border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.08)}
+.btn-white{background:var(--white);color:var(--terracotta);border:none;padding:15px 36px;border-radius:100px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+
+/* HOME HERO */
+.hero{min-height:100vh;background:var(--green);display:flex;align-items:center;padding:120px 60px 80px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:72px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-bg-rings{position:absolute;right:-80px;top:50%;transform:translateY(-50%);opacity:0.04;pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1}
+.hero-tag{font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:20px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(44px,6vw,76px);color:var(--white);line-height:1.05;letter-spacing:-0.02em;margin-bottom:24px}
+.hero-title em{font-style:italic;color:var(--terracotta)}
+.hero-desc{font-size:17px;color:rgba(255,255,255,0.68);line-height:1.8;margin-bottom:36px;max-width:440px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-right{display:flex;flex-direction:column;gap:16px}
+.hero-stat-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 26px}
+.hero-stat-num{font-family:'DM Serif Display',serif;font-size:46px;color:var(--terracotta);line-height:1;margin-bottom:6px}
+.hero-stat-label{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5}
+.hero-quote-card{background:var(--terracotta);border-radius:16px;padding:22px 26px}
+.hero-quote-text{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white);font-style:italic;line-height:1.5}
+
+/* PROBLEM */
+.problem{background:var(--white);padding:88px 60px}
+.problem-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat-card{background:var(--cream);border-radius:12px;padding:20px;border:1px solid var(--border)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:34px;color:var(--green);line-height:1;margin-bottom:6px}
+.stat-label{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* HOW */
+.how{background:var(--cream);padding:88px 60px}
+.how-inner{max-width:1100px;margin:0 auto}
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step-card{background:var(--white);border-radius:16px;padding:28px 24px;border:1px solid var(--border);transition:transform 0.2s;position:relative;overflow:hidden}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--terracotta);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.step-card:hover::before{transform:scaleX(1)}
+.step-card:hover{transform:translateY(-3px)}
+.step-num{font-family:'DM Serif Display',serif;font-size:48px;color:var(--sage);line-height:1;margin-bottom:14px}
+.step-title{font-size:15px;font-weight:600;color:var(--green);margin-bottom:8px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* UNIQUE */
+.unique{background:var(--green);padding:88px 60px}
+.unique-inner{max-width:1100px;margin:0 auto}
+.unique-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.unique-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px 24px}
+.unique-icon{width:48px;height:48px;margin-bottom:18px}
+.unique-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px}
+.unique-desc{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.7}
+
+/* CTA */
+.home-cta{background:var(--terracotta);padding:80px 60px;text-align:center}
+.home-cta-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,44px);color:var(--white);margin-bottom:16px}
+.home-cta-sub{font-size:16px;color:rgba(255,255,255,0.8);margin-bottom:32px}
+
+/* ABOUT */
+.page-hero-green{background:var(--green);padding:140px 60px 80px;text-align:center}
+.page-hero-terra{background:var(--terracotta);padding:140px 60px 80px;text-align:center}
+.page-hero-inner{max-width:720px;margin:0 auto}
+.about-story{background:var(--white);padding:88px 60px}
+.about-story-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.founder-photo-wrap{position:relative}
+.founder-photo{width:100%;aspect-ratio:1;border-radius:20px;overflow:hidden;background:var(--sage)}
+.founder-photo img{width:100%;height:100%;object-fit:cover}
+.founder-badge{position:absolute;bottom:-14px;right:-14px;background:var(--terracotta);color:var(--white);border-radius:12px;padding:12px 16px;font-size:12px;font-weight:600;line-height:1.5;border:3px solid var(--white)}
+.about-quote{font-family:'DM Serif Display',serif;font-size:22px;font-style:italic;color:var(--green);line-height:1.5;border-left:3px solid var(--terracotta);padding-left:24px;margin:28px 0;border-radius:0}
+.founder-row{display:flex;align-items:center;gap:14px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+.founder-avatar{width:48px;height:48px;background:var(--terracotta);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);flex-shrink:0}
+.founder-name{font-size:15px;font-weight:600;color:var(--green)}
+.founder-role{font-size:13px;color:var(--muted)}
+.about-mission{background:var(--cream);padding:80px 60px;text-align:center}
+.mission-text{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,26px);color:var(--green);line-height:1.6;font-style:italic;max-width:700px;margin:0 auto}
+.partners-section{background:var(--white);padding:56px 60px;text-align:center}
+.partners-label{font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.partners-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.partner-pill{background:var(--cream);border:1px solid var(--border);border-radius:100px;padding:10px 22px;font-size:14px;font-weight:500;color:var(--green)}
+.legal{background:var(--cream);padding:28px 60px;text-align:center;border-top:1px solid var(--border)}
+.legal p{font-size:12px;color:var(--muted);max-width:700px;margin:0 auto;line-height:1.7}
+
+/* CATALOG */
+.catalog-hero-wrap{background:var(--cream);padding:140px 60px 60px;min-height:320px}
+.catalog-section{background:var(--white);padding:60px}
+.catalog-inner{max-width:1100px;margin:0 auto}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.catalog-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:26px;transition:all 0.2s}
+.catalog-card:hover{border-color:var(--terracotta);transform:translateY(-2px)}
+.catalog-card-img{width:100%;height:110px;background:var(--sage);border-radius:10px;margin-bottom:16px;display:flex;align-items:center;justify-content:center}
+.catalog-name{font-family:'DM Serif Display',serif;font-size:19px;color:var(--green);margin-bottom:8px}
+.catalog-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.catalog-tag{display:inline-block;background:var(--sage);color:var(--green);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;letter-spacing:0.04em}
+.catalog-custom{background:var(--green);border-radius:16px;padding:40px;text-align:center;margin-top:20px}
+.catalog-custom-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--white);margin-bottom:10px}
+.catalog-custom-sub{font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:24px}
+
+/* FORMS */
+.form-section{padding:80px 60px;min-height:400px}
+.form-section.cream{background:var(--cream)}
+.form-section.white{background:var(--white)}
+.form-inner{max-width:700px;margin:0 auto}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:13px;font-weight:500;color:var(--green)}
+.form-input,.form-select,.form-textarea{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-size:15px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--green)}
+.form-input::placeholder,.form-textarea::placeholder{color:#BDBDBD}
+.form-textarea{min-height:120px;resize:vertical}
+.form-submit{background:var(--terracotta);color:var(--white);border:none;padding:16px 40px;border-radius:100px;font-size:16px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;margin-top:8px;width:100%}
+.form-submit:hover{background:var(--terracotta-dark)}
+.form-note{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
+
+/* JOIN */
+.roles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:40px}
+.role-card{background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:26px}
+.role-icon{width:44px;height:44px;margin-bottom:14px}
+.role-title{font-size:15px;font-weight:600;color:var(--green);margin-bottom:8px}
+.role-desc{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* CONTACT */
+.contact-hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.contact-info{display:flex;flex-direction:column;gap:16px}
+.contact-item{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 22px}
+.contact-item-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--terracotta);margin-bottom:6px}
+.contact-item-value{font-size:15px;color:var(--white);line-height:1.5}
+
+/* FOOTER */
+footer{background:#111;padding:48px 60px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:28px;position:relative;z-index:1;margin-top:0}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,0.35);margin-top:6px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--white)}
+.footer-legal{font-size:11px;color:rgba(255,255,255,0.22);max-width:340px;line-height:1.7}
+
+/* FADE */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hero,.problem-inner,.about-story-inner,.contact-hero-inner{padding:100px 24px 60px}
+  .hero-inner,.problem-inner,.about-story-inner,.contact-hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-right{display:none}
+  .problem,.how,.unique,.about-story,.catalog-section,.form-section,.partners-section,.about-mission,.home-cta,.legal{padding:60px 24px}
+  .steps-grid,.unique-grid,.stat-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .catalog-hero-wrap,.page-hero-green,.page-hero-terra{padding:100px 24px 60px}
+  footer{flex-direction:column;padding:40px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" onclick="showPage('home')" class="logo-mark">
+    <svg class="logo-rings" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="19" r="12" stroke="#1B3A2D" stroke-width="2.5" fill="none"/>
+      <circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/>
+    </svg>
+    <span class="logo-name logo-name-dark">aidra</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('about')">About Us</a></li>
+    <li><a href="#" onclick="showPage('catalog')">Our Devices</a></li>
+    <li><a href="#" onclick="showPage('join')">Join Us</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact Us</a></li>
+  </ul>
+  <a href="#" onclick="showPage('order')" class="nav-cta">Request a Device</a>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div id="home" class="page active">
+
+<div class="hero">
+  <!-- Large background rings -->
+  <svg class="hero-bg-rings" width="520" height="520" viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="260" r="190" stroke="white" stroke-width="2"/>
+    <circle cx="320" cy="260" r="190" stroke="white" stroke-width="2"/>
+    <circle cx="200" cy="260" r="120" stroke="white" stroke-width="1"/>
+    <circle cx="320" cy="260" r="120" stroke="white" stroke-width="1"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Forsyth County, Georgia</div>
+      <h1 class="hero-title">Independence,<br><em>engineered.</em></h1>
+      <p class="hero-desc">No one should lose their independence because the right tool doesn't exist yet. We build it for them — custom, low-cost, and made right here in our community.</p>
+      <div class="hero-btns">
+        <a href="#" onclick="showPage('order')" class="btn-primary">Request a Device</a>
+        <a href="#" onclick="showPage('catalog')" class="btn-ghost-light">See Our Devices</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hero-stat-num">48h</div>
+        <div class="hero-stat-label">We respond to every request within 48 hours — personally.</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-num">$0</div>
+        <div class="hero-stat-label">Design and consultation are always free. You only pay for materials.</div>
+      </div>
+      <div class="hero-quote-card">
+        <div class="hero-quote-text">"Built by our community, for our community."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="problem">
+  <div class="problem-inner">
+    <div>
+      <div class="section-eyebrow">The problem</div>
+      <h2 class="section-title">Our neighbors are going without solutions that shouldn't be hard to find</h2>
+      <p class="section-body">Elderly and disabled residents in Forsyth County need small custom physical solutions every day — a grab bar that fits their specific wall, a ramp that matches their doorway, a handle their arthritic hands can grip. These devices either don't exist in standard sizes or cost hundreds of dollars. Most people go without — increasing their risk of falls, injury, and loss of independence. No local organization provides an engineering-based custom device service at low cost. Until now.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">1 in 5</div><div class="stat-label">Forsyth County residents is over 60 — a number growing every year</div></div>
+      <div class="stat-card"><div class="stat-num">$400+</div><div class="stat-label">Average cost of a single custom assistive device from a specialist</div></div>
+      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Local organizations providing custom engineering-based assistive devices at low cost</div></div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="how">
+  <div class="how-inner">
+    <div style="text-align:center;margin-bottom:56px">
+      <div class="section-eyebrow" style="text-align:center">How it works</div>
+      <h2 class="section-title" style="text-align:center">Six steps from request to your door</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card fade-up"><div class="step-num">01</div><div class="step-title">Submit a request</div><div class="step-desc">Fill out our simple form with your challenge, measurements, and photos. Takes under 5 minutes.</div></div>
+      <div class="step-card fade-up"><div class="step-num">02</div><div class="step-title">We respond in 48 hours</div><div class="step-desc">Our founder personally reviews every request and follows up within two days, no exceptions.</div></div>
+      <div class="step-card fade-up"><div class="step-num">03</div><div class="step-title">Online meeting</div><div class="step-desc">We schedule a short call to understand your exact needs before designing anything.</div></div>
+      <div class="step-card fade-up"><div class="step-num">04</div><div class="step-title">Custom CAD design</div><div class="step-desc">Your device is modeled in SolidWorks professional CAD software, built precisely to your measurements.</div></div>
+      <div class="step-card fade-up"><div class="step-num">05</div><div class="step-title">Partner review & build</div><div class="step-desc">Our manufacturing partner, <strong>Engineered Prints</strong> — a local Cumming engineering and 3D printing company — reviews every design for safety and produces the finished device professionally.</div></div>
+      <div class="step-card fade-up"><div class="step-num">06</div><div class="step-title">Delivery & follow-up</div><div class="step-desc">We deliver your device and check in two weeks later to make sure it works perfectly.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="unique">
+  <div class="unique-inner">
+    <div class="section-eyebrow">Why Aidra</div>
+    <h2 class="section-title" style="color:white">Three things no one else<br>in Forsyth County offers</h2>
+    <div class="unique-grid">
+      <div class="unique-card">
+        <svg class="unique-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="24" r="13" stroke="#E8956D" stroke-width="2"/>
+          <circle cx="28" cy="24" r="13" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+          <circle cx="24" cy="24" r="3" fill="#E8956D"/>
+        </svg>
+        <div class="unique-title">Custom, not generic</div>
+        <div class="unique-desc">Every device is designed for your exact measurements, your specific wall, your hand size. Off-the-shelf products don't fit everyone — ours do.</div>
+      </div>
+      <div class="unique-card">
+        <svg class="unique-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="32" height="20" rx="4" stroke="#E8956D" stroke-width="2"/>
+          <path d="M16 20V16a8 8 0 0116 0v4" stroke="#E8956D" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="30" r="3" fill="#E8956D"/>
+        </svg>
+        <div class="unique-title">Engineered, not improvised</div>
+        <div class="unique-desc">Every design is created in professional SolidWorks CAD software and reviewed by our manufacturing partner for structural safety before production.</div>
+      </div>
+      <div class="unique-card">
+        <svg class="unique-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 6C14 6 6 14 6 24s8 18 18 18 18-8 18-18S34 6 24 6z" stroke="#E8956D" stroke-width="2"/>
+          <path d="M16 28c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="24" cy="18" r="4" stroke="#E8956D" stroke-width="2" fill="none"/>
+        </svg>
+        <div class="unique-title">Community-rooted</div>
+        <div class="unique-desc">Founded by a Forsyth County student, serving Forsyth County residents, partnering with Forsyth County organizations. Every dollar stays local.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="home-cta">
+  <h2 class="home-cta-title">Ready to request a device?</h2>
+  <p class="home-cta-sub">Design is always free. You only pay for manufacturing materials.</p>
+  <a href="#" onclick="showPage('order')" class="btn-white">Request a Device</a>
+</div>
+
+<footer>
+  <div>
+    <a href="#" onclick="showPage('home')" class="logo-mark" style="text-decoration:none">
+      <svg class="logo-rings" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/>
+        <circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/>
+      </svg>
+      <span class="logo-name logo-name-light">aidra</span>
+    </a>
+    <div class="footer-tagline">Built by our community, for our community</div>
+  </div>
+  <div class="footer-links">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('about')">About</a>
+    <a href="#" onclick="showPage('catalog')">Devices</a>
+    <a href="#" onclick="showPage('order')">Request</a>
+    <a href="#" onclick="showPage('contact')">Contact Us</a>
+  </div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. All weight-bearing designs are reviewed by our manufacturing partner before production. Founded 2026, Cumming, Forsyth County, Georgia.</div>
+</footer>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<div id="about" class="page">
+<div class="page-hero-green" style="padding:140px 60px 80px">
+  <div class="page-hero-inner">
+    <div class="section-eyebrow" style="color:var(--terracotta)">Our story</div>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,56px);color:white;margin-bottom:20px;line-height:1.1">Why Aidra exists</h1>
+    <p style="font-size:18px;color:rgba(255,255,255,0.68);line-height:1.8">Engineering should serve everyone. Not just the people who can afford it.</p>
+  </div>
+</div>
+
+<div class="about-story">
+  <div class="about-story-inner">
+    <div class="founder-photo-wrap">
+      <div class="founder-photo">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAK8ArwDASIAAhEBAxEB/8QAHAAAAgMBAQEBAAAAAAAAAAAAAQIAAwQFBgcI/8QARBAAAgIBAwMCBAIJAgYBAgUFAAECEQMEITEFEkFRYQYTInEygQcUI0JSkaGxwdHhFSQzQ2JyU5LwFjaCorJjc9Li8f/EABoBAAMBAQEBAAAAAAAAAAAAAAABAgMEBQb/xAApEQEBAAIBBAEFAAMAAwEAAAAAAQIRAwQSITETBSIyQVEUI2EzQnGB/9oADAMBAAIRAxEAPwDqaPp3UuoOWZv9T03jJkX117R/1NuPB07p2+lwvPqLuWoz7tnvtPoMWGFQivdy3bJkwYUm5Qg0v/FM8HF6Nrx2n6/qsUtoYf5NHxf9KmklpPifPrYYY4sevrUKMOFJ7T/qr/M/RmTBpabWmxSb9YKj5x+mroEdd8Iw12n08Vl6fnUpOEa/Zz+mV/n2s6eHKTLyyz9Of+gb4iyS6b1HoU7lLDlWqxK+IT2l/wDuSf5n1WcpKLnkyRhCO7lJpJfds/M36Oes5/hv4o0esgoz+Z3abJGbqLU9lf2dM+yayGo18+7q2oedQdrDD6cUfy8/dlZ4by2jHLw6+t+LVNyxdJxfrk1t8+dxwRf95fkcbPF6hfrvWdZ+svFveRqGLF9o8L89zgdb/SF03QKWn0Sjqs2NUljdYofeXn8j571n4i6h13IpazN3RX4ccdoR/L/LHOMt17jrn6SsWnU9L0hfP33yzX7P8lzL+x4TqfWeodXy/N1+szaiSVJTl9MV6JcJGGMn5I3RpjhILQqyLYVysm78lke7BTInXgNgAoHAzFkwASSEdJhbsR7+Rgrdg29AsWnyMgyTpGTUalYVurLtRPtVJ8nK1c5TlvsXjEWqdXqZZXu9jPvIaX1MHBpEhVAaJKWwndZRI+QE82QAlgsjWwowa75Jdik/MANkRNiAEToe1YiTYyiIzRluXRm0ilRotgmQqDJNrgrUG3yXxt7MsjjSFtfbtl+W+aGWO92aHBNbAWMNn2KVj2B8s0KBPlh3H2s/y6J2bmjsJ2W+A7h2Mk8S8FM4VwzoPEZ8mMqZMssGKVqhluNOG5W32uuSvbOrF7HZ6HHHOXfkjCUYK2m629TiQZbjk4NNSa9Sc4eL2WX4lyaPBLS6D6Vb/wCYfNeyOC55dTkk4ucrf1Slu2Lo4/PrvlUTs4sMI40oUveuTnskrfe2bRdPxwSk/wAT8s6UccYrZlcKrca0lSJtOeDd7XmiZM0pRVclTd+SLMsMlKSTS3p8MWjOmoq6sy59bjUqk0minXdXUpuOmi4x8uXP5HLcnJtvdv1HIK661mFf9xfyJ+v4E/8AqI5C2Fa7mGidyGv0z/7sRnrtOlfzYnD7KezZJRTCB2/13A/+7H+Yy1GF8ZIP8zguN8bCuPatnuBb09GssfEkBuzzsJzjxJo36XXSclDJx4YaG3RDEKVkoDEi4BwhkvAHsy/HH7o6GXbUMwY13ZIL/wAl/c6Gdf8AMzXuRfZxJbiUPewOAMVsGxSDCWIwgAkJwQDYBG0IwtitjhBdFct2MxWhgjdCuTHaEcfcA/X/AOuSk67F+TKZZ3OTjv8AY5fUut6Pp8nCU3lzrjT4l3Tf39PzOHq9d1Hqqa1OX9T03/wYH9Ul/wCUv9DjmK7k7HUPiXSaSb0+nUtdql/2sPEX/wCUuEeb64tb8QaHPp+o5444Zccow02n2jF1tb5lvXsZeo9Z6Z8Oab9vOGCP7uKG85/Zf5Z86+IfjrXdY78OmctHpXtUJftJr/yl/hGuPGi5PHyxZllnFXGn+L0a/wBz0XWPi3qnW8ccWoz9mFRSeLEu1Ta8y8ts4lbjcnQlO4KkAFsAewN2ANWARJBtE2DaAIlbJJ0RsV7gBcrEZLoV7jCWBjKmFY73DYVtWRqqfii5YxM2NKKp23yEpVztQkm3J0uTl6nK5vZnQ102pdjWxzlj3bkb4s6q7aK5Pcsk/CKm9y0lFDZABb3IwsD2ABfgPAEQAjAMo2HsoARhSC68ASdiM6a8DIEY7DxgTs9IvUuxxbQkYNpmvDGok2tccSKFDJbF6jZHjrgjubditJXsg9vsWLGMsb+4u5XYq7UK4l/YHsDZ9jOoWN2F3ZRHFBsdrPKOxROBrnHyVSimOVnliwZYGacK3OlkhsY8kDWZOfPFmSSfJZ4FlEkdi/bNv6dn+Xljw1xTPQxco7xW3ozyaO9oNZKeJW7cFTMc8WmNb4z7r4TJ3VyK5wuM+6k+fYzarqCSePEt/wCIy0tbqNZjwx9ZvhHMy6jJndybElFyk5O3e9sFJArYfcEWFqyU72GSPkkVuGgkge17sWqG8AavkICvjagJW7DVLb8wRnGn3D0Q0l4Gw45ZsqjBeefQu02klmu+6MEdLT6aGnjWNUIlsIdiSu6Q9IHkgKRrYi5ROUT/AFEFunSepxK+ZL+5v1FfrOT17mYtFvqsX/sjbl3zSa4tk1UL7BIuQoDAEmMxGwCIDJZOUAK9uRWwzaK26YyPyhGHuFctxgGB+oXYr4AtgxbS5JYBk++Zc2j6Tp8mfJPFpcK3nlnKr+7e7Z4frv6TJ5Yy0/R8Xy1w9TkX1V/4x8fmeM6r1nXdZ1Dy63USyvxHiMfsvBjXAscNFbtbqNTm1OSWXPlnlyy3lOcrb/Mp8DOgMvQLYe60AiQAyYUrIkMgCUTgDdbAuxBHJAsDDQAe6gdwKIluARph7GWRx2tyxY15AaVQgkWqK+wewIgVqijI1GW78GlpVZg1stpPitkVj7KuTqZ9+eVPaOy9ynM12e5bKEcdybMeWblsbxkom9hKDJ70AsitEGaAwBQNWF7AAIkFIiGS8gErYD4C2TkAStyyMCKG5YtiaqRFGmNHmkKrkW4oftCbWuMWQx0maMcHSdC9tfzNeKGxna3xxKobcB+W0i5QG7DO10TFTHG1yN2os7COLJ2elTgL2suS23A4j2NKu2yOKSH7QSWwbKxTJbcFUo+xoktiqRWLPLFmnFszZI78G6SM2WJriwyjBkjRWtzVOKaKOymayubKI9kWYNRPBNSiylsF2FS7D1k8+OMEkkvQEU+WjHpclUrOni7dm90zHKNMape6EaN+TT4pRTVp+xny6Rpfssn8yNNGcjtDSw5IuqFamnXYLQFboHAN1uRO3TEDVb5Hjpsk+Eq+5U7k+3+xs0Ojyzl3O4peWBKpaPIn2Wu5814Nel6dDE++S7pe/BshgUOOX5LFGg2ZFBBoZINCoLTC1sMB8BsFWyA27C06sqj87VZVh00O6T5fhD0Grp2owrqWHFKb7pO0kvY3zdze3mxOn9Hhoc3zp/XlreT8DJ9+VvwRVRLDdE/el6CNpCAtivcDd8EV+RhKsnAG6A2xwJJ2VyGbEbABYJMIrGQtiMNiOW4Qke3kFklJbiWML90Syckq2UQ3bIGiUAAKW9koIAUECZLAFfJKJyyMQFJB5BFOTLo49wCvsbGjAvUF6DKPsI9K4QsdR3C9uBlGxBXVukHtp8FjSxxcmLjnjzNN5FGPqwGiyX0tvg5OsmnLtXB2NfFKOOOG+1v8T4Z57XZO7N8qCcpPfbwaYROTLqJdz7XwjJlW/wBPBfNQ7/qbk/YpnFydRRvGTL2Nzv1JKPaaOz5fJRkasolbYrdkbsiQBCBolAcRK2P4JFURu2ALQYx3IFbADVREmyLdlsI9zS9WRa0xizHi2LMMHbaLezakh8cKpUZ2uiYmUPwo14oKiqMfrSrc1QhRla3wxDsD2j0N234JbaVKIO2y7tpcCtV4EelPbuTtLmtuBZREelLQjjZa1QhWysVThsVSjSNEmUyVjlZZRnkima2NU4lM4mkYZRjlEzZk0zdkjRnyQ7kaxz5xkIGWzApGjFZjn2s6uBtwS9Uca6OlocilicHz4Izh4utp2skN965LflwfKMmjfbKUfU2qzCxrCfq2Nveyv9Rj3bSZpSGUSdmzrQY3yxlocK/cRoQaDYiuOCEfwxivsi1RSIlsTdiA0mBh4BQBCPgl0NVi2dKxO5QtyapByZIYk3J0jrdB+FM/WJR1mvvDpE/2eL97L/ovcLZJuiTbm6Lpeu64pLS4lHBB/VOUu1P2TPUaPpWbRYo48HSZ9sfxSjljJy92en0ugx44Qx4sMYQgqjGKpJG/Do1GLTg6XlmN5NtJhHkdZ0/VYtFPPk6drcUEt8k4LsX3aZ52L3ls0fRutaeOp6fPTd8o97XalvbT9PJ861rWm1ufA5x7sc3Bpv0Lx8wspoGxW7K1kvhr+ZLkuYsrSdi47h7kL3VuDut34AI2QVyT9id1IAknRW+RpSsRsok7hZSBb5Ek7YAXIVyFcq5FcrGRmLuCyWEDYgoi2RLGQoJLAwCV7k8gT8BQBLAxhuy0MES2oZQ9SyMElXIygIwhBLgtjEEUNxuIDwRNsKXcNGNIR6CMRqDQd/AHoO20F9jW8ItfYneorcWpZOK38CCjUxSxVBfZL/B53UzydvapRTfk72ulKHy4K4y9uTkz00dPkfzW2/Q2wZZMOPA2vq59R67U1sl6l2TK7SjDZ8GfLlWPuTjb438GsrNi1OVSdJcGWTtmjKnJcopcH6FkqaCkM47hAFSoNDKNh7QNPAGhvFAaAE4GjGyKJZBUACMDThhvErjG5JLyaIqjLKt8I0Y13NFi/F9mTBFeQqvmEOqRdii3klL+RrhCyvT47h99zXDE1s6Mq2wiv5dB7TRLHW5VJUS1kVtUK1Za1sLQGroWS2HaoVq0IaVSVlbizQ42VtbtAViiUWyuUNjU4bFbiUzyjLKOxVKFmqcSqaqy8XPkyZY0Z3G2XZ8lGWWRN8m2LmzqjPDtlfgofJqySUoUUONmkYUH+H8i/S5OyaZTVBxupoWUEeg0tO5fyZuX9zl9Mn34pJ8p7HTi7qznybYn4H7U6YqVjpWQYcDx4BQ1AEZAhA9FYEhmkBIRbTtEyZO2ShCLnOTqMI8tl2lwarqWrjoenYHnzy5riK9W/CPo/wALfBWl6HFZ8lanXy/Fmkto+0F4XvyTnlMZ/wBVjj3OB8N/BU8eSOu6viUs+zx6d7xh7y9X7HtMWhUt+03w6fkcr7djZi03y4vaqOXLO5ea3mMjFh0Tjuosp1eSUJ/Jwrvy+niP3NWr1j+XKWPIsOCCcsuom+2MY+Xb4XufKfjP9IL10Z9M6FOeHRvbNquMmf1S8qP9WaceFyLLORd8XfHX/DXl0fTM3z9YrWXUr8OJ+kff+x4CGSWdfNnObnLeTk92yjMu6seP8Pkvw4moJc0dkkk1HNcraeM8ie0nX3L46rMltkl/MrWNoZRoNBZHV6hbd7pjx12aNq4lAr52DQal1HK19SQ3/EH/AAoyUStw0bWtfV3Ei10ZcxaMhGGi22/rUHy2K9Tj9djE2Bb8/kLQ26ClHM0oyTbFnFwtPkq0uFt/N4ins/Vl84uS3luIKU9uQ37B7CdoxptS9Q0PSq2iV7AC2Smx+32J2gCpESbHjjfmyxY9+ANXGBbGDGUKY6QhoqT9A0x0tw9tipq6a4GSY3aN2gAiqQyAMhHDUStwpNvcft2A1TxxbTe400u3ZVXoWLHdCZl2QewBxNbNz1cFTk48+wmrxRy5VPZuhP1qX/Gs2BP6JLtf5eS7UfQuxS8Xsb4sMvbnZF8p8215OZqZy7nvd+WdDPlStN2zm5X3SZpEF3pEbSW+4Kflsja8Fkqkk2GKC1YYoRikSicB8CMviwMatgUUSLYaK3AhroKa7Al3KRokivBD6Lrku8L7mGXt1YTwswuqHjc8ijGrlsVxfbuaNDjcsybW3JN9NcfbpY8XZSXhGiKoTGi6K23Mq64n7pW42y9xvwI4CUp7fUWUaW3JoUG+UgSx8+ojY5RAkXyxV4FWOg0FTiK4F/Z7AcfUCZ2iuUdi+SiuNzNqMqxwbHIyzulOWcYrc5+s1cYbRe/sJq9ZLJ3JNUYJRbaOjHBw8nL/ABJ5JZN7Fir4Tssx4XPIopM6WLSrFyky7dMZjcnLeGb8MplFxkjt5MUd/BzdVi7Z7LawxyLLDTPJUK9mWZFUPdMRrbctGnS6RO8vb4o7ULZ5zQSlHN9PhHpNPTxp+phyNcF0eB0gRQ3kyWgUEiQgFBIxZ5I4ouUtkgIZNRi22klzZf0jo+v+ItQ8Wjj8vTx2yamX4V7L1Z0ehfCep6846jVd2n0T4S/Fl+3t7n0vpXRMelwY8GHGo44KlFGeXLJ6Xjhtj6B0XS9A0K0+mw05f9XJzPK/Vv09uD0GlxpfU00vsadPoI4l9UbLc2TFpoLuTlJ/hguWzkt3duiTUVvPgxRcpySS8sw9W6rounaDJ1DqWeOm0WPw/wAWR+El5b9DmfE/xL0/4Z0q1nUpLNqJK8Glxv6pP/C9ZM+J/EfxP1L4q1y1nUctRhaxYIOoYY+iX93yzo4uHu830zz5NenV+NvjrWfFko4caej6Zjdw0qf42v3pvy/bhHkpTlkfbHx5DOTyun+H+5biw+Gjsniajmvn2GHFXg09iTIo1wOByFexGyEAFYKGIAAFjC0AC9wtWSgp7AAoWhmy7R4/m6nHGrTlvsK+g25MXyMePD4jFP8ANlaia9Qu/I29/BR2EbPSprclJFjXsCkMVs7QqI/aFRsBpXTGUC1QoPaA0VRHoMUPQHITtJXoWLG35HUEkIK4wdbj9o1DdtoR6Vdu4Un6DqI6pcgaiTa8BhuuC3st8bFkYJC2FST9Bkmi7tpcAaVBsK3JvZCZotwabtl6VFOR/VuOG8lncodSyzi0pSlYNXqJ5c7yJuPcqcVwP1FTx63L2xW72KXHuVydNcnTi58vama7t2Y8v0ydF+fLX0oyTmk6ptmkQDfm2C7QN2MtkMkTHS4FSHEqA1bJQWRAZWK2FitgSJ0MmBIK3Fac9uhh3xrkfl2V4pJQSQ6d7GVdc9LMUe/8jodOh9UpeKoyYYJL78nS0K/Zt+srM8q1441Y1bZalYsINt15NWHHfJnp0wsYPimWx06a3Rphji68Bl9K35BW2SeCnsuBJYm99qNsnGStP8iuUoVtygNhljK54/Q05GkUZMij9xWhQ3T3Kcs+2NjZZ1e9sxZs7prYekZXQZtTUXRyNVqJZLV7F+XI2nXkxrHKTN8Jpw8mVrP2NukjRi0rm96o0Y8CjT2v3LXKONWyrWcwDFhWNWkhpSXJRl1dKooy5M03G+5ck6tVcpGzJNLyYdT9RU88r3lYe/u5NJjpllltW42mVtfQ36F0V3WCEbx5PsNkXSzcMia5ex6PQZFPClfB5aDppne6TlbhKN/Yjkisa68X7jqmURuuQ91eTDTTa9DLcpU/cLnOvpkGjNkmotJXKUnSglbb9j2Pw18A5MuSGt6zDdb4tL4j7z/0PH9K1kumaiWeeljqZvhyk04/Y9j0v9IWi0a/5npesirtvFlUv7mXJMtaisZN+X0HR9Lbmtq9kjt4dNHElGvzPG6H9K3ww4pzzazTvyp6e1/NMvf6Sfh7WT+VpusYMd85MqlD8laOXsz/AI37o9JrtV8n9jhXfme9eI/c8B8YfH2n+GVkwYJx1vVpL8Ldww+8v/8AE5Pxh+lHFgWTpfw7kU8nGXXrdJ+VD1f/AJfyPl2fN9cpdzlOTuUpO236s6uLg15rLPk3NRd1Dqep6nqcmt12fJqNRk/FKX9l6L2MsISyvzXgmLE8k7bf2N+OEY7I6XPFePAoLiy3tSHpEuvAtqDtAxrFYALFew1AGADRNgWAFgYbFYACEAANSo3dIh/zblf4YuRg7lsdDpH0wz5PZRJy9CNeVq1XkrkGbtishRWK4/YZsBQdNQvkZRoeMbD27iEhO0ZQGUa5GjHcNnokYFnYixRrhIjjuLY0VL2JQ6VBSoDJ20FDqAe2mIFUQrH67lihumNQlaJVBirG7BoxrhUwGi9rA1Ra6BtXAtjSmtxJ41Tk/G5fKl/sK4qUXvsOUtPOdZ00IZ8U3Ku+Lv7nJ1StW+H6HpOq6KWoxNJW4bpnBScF2z/O0dPHfDDOOPli1N27KG2n6HV1WOEVxuznzjFPazaMlS9WxkrYjLIq6YWno8VQaJFBYjK/7g8DJbka2GaqQjGnyJ5Gk17DxXsIuUMnTomqxbsbSguCzHyZIZLVFiy9pGnRMnSwW5VtR19J2QxpVuef0+r+X+Le+TZDq0YqoppEXC1pjyyPQ41FpPj2L4evNHlp/EE47Y8VP1bKJfEGoku2NRv0YvjrT/Ixe4WWEY3a/nuZtTrY1xVeTyEer5Xf1u36mzBrJZIpd1+qFcdLx5pXXyaxwmnb4LY6hPeuTjfOnKoviPlmiE6aimzOtpnt0ZSi9m7Zx+uYNTnWNaeVJP6t6r3Nqm65EzZO5MUuj2yxuOOKm7klTZnzK7LpsoyypDjPOsk4pKmJslsHJO5exU5L8lybSOTLRnJ7mPU6yEV2xlb8k1mrc4uOKqXlcsu670LH0iWmx4uo6XX5MuBZs3yLrBJ/uNvl1TtGuOLDLP8AijQaOfVMkscM0YyStJ8s1azoGTTY2/m9zq6oo6L34+p4Xj338Hc6zrIY13Tkl4SXLGiTbyri4yqntsWY1T3Wwe7vk3tu7HStBsaK6TdbEi6UvdBlC69iOLcXQtkywW7s6nR5/U0zmJfW0b+lNxyyFnPAx9u5GQbd+QQdx3oekYNQafhg75x8WOqJXqIKv1qalvjdepZj10eJRkvyI17CulwgDXj1OBqn2v8A9gzxaLOqeLHL7GFxt3SoE1Sfbt7jkLdc3LJQzTx4Y7Jv8hsOlb3krb9TUtNBbstpeBiQsMKhwkMoRW4VaI36C2NA68AsPgFgYAkB+oLscIPzA3YUiUMIqJsRrYGwAG34/qL3PyhhW6AJ3ewGxXIHf9w0D15Or0+PZoW/45t/yOP3FsdXnxxUY5JKK4QspsOvaFnONHK/Xc//AMj/ADJ+s5JcuyO09uhLND+JJivPBc5InOy55VvRjnmk5cf1L7S297FDdoyj6IeMdjNZIwssjGgqNDxEqB20Tt3HS9hlAWxpV22H5bqzSsargEo+PAtnpT27UgqHqWxgN2Vv/QWwrUbCo2WKO3Ae0ezKo0uCdvsPQyj7C2FfYr4A4L7Fvbb4D2Pwg2FSgl4ElhTfk1dlrgRwafIBz88Gu5+Vx6M8frMmbBqJpK13HtNS38qUKty43PMdVwywuGZRT7nTTNuO6ZZ47cXPPJm2nafjYyzxuOz5OhPP3/w/kZskHudUczFKBdijafsFx9URPtCqQHLAnsGKEY0CXA/btYr4YHYzPdivYZ8ge5aET3JF3JgexZhxym+OSarGWmi/QdRyTfGxqw6JNrazqYNHGMlcEyO5vOK1xO2Udvq/kNBSb8v7nqVjxpJdqv7AzafHJU4RX5C+Rf8AjvMSg+HGvsL+rTe6izuy0+KO/am/dCqMY/hSX2FeTY+FyMWlk5cP8zdgwSxNOK2RfKmMn4IuTTHj0kYt7svgmJFr1ssi1a3M7W8i1N1wJNbbmnDHuZbk00ey0Jo5E2tzNnlUGzZqI0zFnf0NVyVizzc+U22/L8GnR6F6yVKaUU1a/iMklLudIs0+t6liwywYs88eKT3iqOiOPKE630qfS9Y4xlGWKa7oU969DBJyaSUWkdT9X+b9WfJPJK/I8sOJbRivuV3M/j2w6LUz0s3kjD66pOuAZI5NVP5mWTk36myWNX9OwvYo8MnuVOPTLHT1wh1hZojDufBZ8vYXcfxsUoUDHHk05YXwUyj2v0HKyyx053GZpepr0dwz2ZZfTnf3NWlaWd35Hl6Z4+3exfgTLUtirTv6EmqLUqZz1tBIFonAGV7C/iXoNIDoCpZLbYDWwzWwGx7BBorevUVsKYAGqZGERsQRugNkYv5DAgaCBO2MkSGcNvR+4UlFWJOVsAmyEk74BYrHAjYr9gNhXAwR22RIJK3AkoDQyIwBaBJ9quxm65M85268DAzn3idqIFAH0WMdh1EkUWJHNttoqiOoDRiWJULZyEjD1G7UHkeMRWnoqT/Iak/A6j+RGkIEVcJWydvuOkq4IkBlolbj9pFDcNkCiMohjBstjBrkNmr7RlEdrcjEFbVFGWbXC4NXbfkpyqk/QYc7O3F9y3k1wcvq+NPp2WDVSq2/VnYyR7p49q3sy9Qwxz6LNa8KMfu3uXjfKcvT5zco5G1fJ0MUbh3OmjNlh8nLJPw2CGWd02dv6cmluVRi6S3ZmkaZK97KJL6gMsYuy2EBbVtl+KPcrFTx9kkqRRJ/SzZOOzbMkv6BDyZgPkPLf3JRSNIoubSXk6um06iqa3MulxLui2dKMlHdmeVdXFjP20YoRgro1YpLutnOnqoRSt8FUtVNpttRj4MtV090jsT1WOG/cZc/U1dJPf8AI4uTqPy91u/NmafUZZqb8cGmPH/WOfPJ6dWevctrop/XMrWzTMGn/b54wnP5ak67vQ6ufoGt0MLpZVf7r3or44znLaXHq3J1I0rJfBzZQlCu6E4v3RqwNSilGVkXFthl/WuOSjRidtGVw7d+TRhlSRjlHRi3YpdrN0MkZ4mn5OWsm5bHLKiGkm1OsxXJnOzR2deDqZ7kmzBnjtxyVKnPFypxqTLMc09nyWThT4EUVfBtK5LisSvgVwl4LcaHcb5QXJcxZnjkMsC5ZoUfYdY7J7lzjURxUguFrg0LGgvH5RPcfYxZMdIx6iLUWzq5MbMWqx3jkXhfLm5cfDhzd5/ua8CvLb8GPKnHKn5N2Bd2Rv8A8TfL048fbt6aXel9i7ezJoJ9z38I1ua8HNW0MiUBethbYGV7sDW4WtyNACgY1AYwRonAzQtCJLFe4RXwMARcECqYAlWHaK9wykktioIBbvdkb2J4FbKILAw2BhAUGyC0ChgKdjBQJOgCCykkCU0UzldgQZMjboRsjtgS9RkKe9BAlvYWAfTYxLIwFiWx9DktdCDqNoHaWJULZhGHsOo0Bbuo7yGUKdt2xbPQdjauW3sTtLUrJ2oNjSqgqiztvYKxgNK1FtlkcZZHHQ/aLZ6VqNBLEgOkAkVtbiuLSdbllWFQr7iVpn92LJOc9/wpcF7hvutyvscpNKxlYxTqc+xSqS+m/T1Zh177IPHjtxTVv0Ndrtyzj+N5ZKK9UZtZJQw9843Dtk6Rc9orxHU8K75V+JTl3P1MEJVKmdTqDbnKNfiqRylFqe6o7sfTly9taalD7GZ2rv1LYOq3FyIZKkzXh/AjHLZmrSt9jQqrH2tn+FmKfEmbZbwvwYnG8TfqwxGTKn+Jjx8MRbNouhDYqoi7FPtcS+eZ9u3JmS3QMs6sjTol1Fkskcce6T+rwh+n6HVdWzOMG44VvKXoY4dmSd5JtRXj1PVdJ6vodPHtUljSXFD9Fba8/wBa0MNDqlihFuKgmr8+rG6TPouDR9TXUdFn1Oqy6fs0Uo5uyODL3K5yX723CO91vPoOs4YvHqMWLJBbSfk8rLBkllcfpe/4l6F7Z3FWoT7oyjK23VHv9Xr9P0/p2KWryr50or6Vu+DxOl0edZ+6Df0O06NuTTyyS7s83OXq2TavHGr9X1merwLDhjNRtt3VbmbS4cvzHNUm1wizFC3UVRvwYexW+TPKujDG0sE3Fd1WWJUFQGUb2MLXVjDQTL48FcVRbGNkVrEatGfLis10VziKUWbcrLjpmeUKZv1EN7RinszbG7c2eOqMHwaIbmWL3NWHgKeDRDGvQf5deCY2XpWZt5FDgvQDVKqNDhSK5KwOxnlGzJqMezNzjTM2ddyaNMPbm5cdx5fUL/mGvc1aKX1ST9KKNWq1U36M1aGCpyfqdOV8PM/bo6JVKcXs1RshFX7lGBJynNcNl629TnrSJOax8tDRlasDSfMbF7pJ0uPQS1hARba3JYEjQA2LbsBUYrGFYwUDV8BYaoNkCjsLKSQZz22Km7QQAwBbFaGSSF8DedxR6BlVAasALYwjATcL2QBBJvYDfuVzm2PRFk9xQtNuyUBFIGqA/uAC6Cm/QFWEWw+owVFsELGIy7Y7s5K6lnIY/U9uARTe7VL0HToQPGKS2CBboZCMyWxErHUbQ0YbAeiqI/aMoUGhbGipDJUSqIhHoO3cWUfUtoWX1/SuPUD0rTS2XI6TS35DDH2xoeqQDSqUbRTG9q5boulL6kkU5Z9ueD8UOCuXHtj8xt/TGO35tnE1+tnqIvGrT/C0/Bp1meWm1GSC3abaXp6MxPAo05v8T4fhLlm2LLJ5nXzn85qM7cdjOpuT33LNZXz51/E6M1U6OzH05a0LYWbsVT4XoS9xkSSbkjVptjO1uizHPtYqeLTl2x0jLPaH5mnI7d+xmmu6El68CismKDtts1wj9K9kZsS+pmuH4SqjE2OHd3V4A9L3btsu0+8W/Vl0YORna6ccdxh/VKfBZDSx8J2bfk9zstjiS8E9y5xsK0cZdtpt+TRgwLHb7VuqNKhvwOsMpcIO9U4lE2404vdLt/IWOKeX3NcNJvuaYYkuELuXjxM2HRKKT5L/AJLtPwjTjx0POCrYjLN0Y8emXspC9tMukqE2ZntWgSLYvYrbImScW2LMiD22LatMuaPcuLOflxPd1R1pR9jPlx2XjWeeG3L3iacGRUl5BnxU0yqKppmvthPFdPE01sXRkYsWWkrLlkTWxLfHJo7gSdlSn7sEslPkWlWpNmLNNK74L8mUwanIu177ovGeXNy5ajiah92eb9zdolWnlL1ZzptvI/udXQx+Zij4o6Mr4ebPNdLT4/l4or2Lk2thVslW+wU7RhWhgNInBHuI0FGBQAGDw/cjFsAjbAtwqLZNsfkAKVblc5WwzyJ+SpscgSTFasK3CxkWgUOK2MBQtDNiAQoDIRsYLQs5UGU64M85WxgzlbA9xW+AoEowBboVgEbITgjAAwJ2gsnbfkCfSsuqcXUd2zVpsbpSm+6T/oeI1nxZLJr8a0S+Xghf1SVvI/WvCOz0/wCLoKo6nBb/AIsb/wAHNeOx0TOPThSvwZNN1TSatr5OWNvxJ0zfHfiqMrLGku0iqQyW4eyuRlDyTsDFMtigRW2wy2EuQQBCogASI6irlsWRjt/97jfLT5W4tmrScku7b2D2j9oVHYBpXXsBota2K5DNVNLZrZmfJG3kviqRomnSozTkliySe6VscKx5jNOefqcYySbltXqkZOrRrPNRl4s6EIqXU4pL6o412u/L3OV1fP8AM1E5ReyajT9ToxY157Ww7ZtvnkwTlZ0+pXKUvWkctx3o6sXNTwX0e40Lk79BVtGh4cWUSOW7JF7koi2EGqLuEvVqir90kJbETuL9kB7ZIL6vzNUFsjMlv+Zog2h0YtOmjbpepvjirwYdI/qOpj3Rhn4dvFNwscXsWwxexbBWXwje5jcnVjgojhimthvleiNXyfceOLgnuaTBkWNvati/HgXlM0LEvQdY6Q+6qmCvspIqnsaZKlxZnnF2IWMs02Uzl2mnLOONM58sjk23wPSLVqnZZDczRTNOCPc0KiLox9h4wZZCNMtjKKf2JaRQ9PKSbUTLkg4+h3VrcUcEofLV+rRxtVkVtpbDKsOaKa3MzgvKH1GVWZp5fCZtjHHllNrO4HznDyUrILLIrK0Xdpqjqk3VjSzbcnOlK3sWRm5RW/HIdo+RdlzP1MOqy/RItyy2MGsyqMKfrRphHPzZeFEN05eW6SO1pMax4o+pytDjeWSk/wAKOxjVJRHnXPi1p/SNF7CR/CNEyqxu2Fg9yXYgawMVyJYHtGxVFtjLdglkS2iOQto5LGqW5VN2V5Mq/iS+4j1WJbfMh/MfaNrHsC6dMz5dfhgm+9Sa8I5ubqeXLJqLpexcwtTco7Sd8Abd7nnnq8yd/Ml/MuwdTnDabsd47C747bkBmXT66Gek2ot+GauG6dojWlbDf0A+A/zJKkggJwxZSQJy3K5SvgZbSTK2hmxW7GAsl0CqA9wI12Ri8EtbgBZLBt62BsAN2FCfY0YcfdC/cVA6n4f6jo9R2ajTTwV+9JXH+aHUM2GNOClFeV5PrM8ammpJNPlNWjl634Y0Gs3hCWnn/Fi2T/IxnPv22vD/AB88hrPl5k+57rydnQfEms0b+nK3BcRl9SNGv+C9dGT/AFeENTH1W0v5HD1HStRpZSxy78ORfuTTRpvHJnrKV7HR/GmHI/8AmsHY/wCKHH8jvaTqui1sf2Oog5P917M+VqOoirnilXqlZZj18k1Ula8kXil9LnJZ7fX40lyN5PnXTviTXaRfTnco/wAM/qR7HonVtT1bTyyS0nyoLjJ3bSfsjnz47i3xzldVuMVu0L3OS+kzzqE4KUt5er5+xsx9n4Y7UjOrCCrfyWoPYqA/pJ2rRkSxO4nf7DJJMrk7Y74K/PBQBqmmc/PF/qk1xz/U6Mt16bGLX3HEqX4qX5hCrzsO75+eS3njUX+aOJ1CPz55JQ8zb+53p/stVmriSa/OrOTiwNZ3jr8GN5V7ps6MGVjh6yFwTfpyc1xXPLO1rYJQlDjtTaOLP6Uzpwc+UVN7mnF9cNjKkXaaXbafBonFY470KjRjipN/YqnCrolVhYuoMeNuDZXJ0iyO+JfcadMzdNlsHdCZErH067lXuOjH21ad1kR18e8TkRXbJHTwP6Er8GHI7eCtmNmrGr3MuJGuGyOfJ3RdjXJohFbWUY9kXwe6E1i3sE7F5dFvcqKpzSTA6ryTUdjJlyb7Ez5bdpmV5LY0WqtbkfbsUYIdyXuaMuFZFV/mU4+7TtKW69UUyrXDTqrZbCCgZpa2EVvZW9YpcSoXbaO6RvllUVyVrOmznzzRknc2VfMlF7SteB9hfK6zy+5g1udRg9yl6mVejMeonPJ52KxxRnybinLnlJ02/ZCKbfIHB9xHGuWaxyXaOVcCSFlJIW23siiWQtpmnCvo3KcUPpNW0cYqrFmzPejl69901E6OWduzlZZd+Z3ui8I5+auvodP8rBFeqs0ptVaOSur5YJRjCFLZCZOrZ5Lao/YdwtZd0ehjK48UOpwS3lFfdnln1DPLnI/yZVLUSly2/uwnDR8j0+TX6bG980P52UT6xpldOUvsedcrET3KnFC+Su7PrsL+nFJ/dlM+u5pOowhH3OVZLoqYQu+ujLrWqarvpeyozz6jnnzOX8zK2Bj7YVyq955yX1SbRW5iWBv2HqDaxzBaEW4WAEHkiZPIwKnUk0dHR9SS+nJx6nMIRljKcunpYZI5I90GnETLPwcPDq8mH8L29DoY9Ssq9H6WY5YaXMtrpTFsWyWLRmYAWBsAYCIBMAhOEEFgAYu4z4BQwC5s6ehg5YE65bOckdbSLt08PdWRlTfUkkxoxXoNGNIeJwbd0hoRXoiZtPh1ON48+LHli/E4pjxQyQtnp57V/Buky3LR5cmlk/3V9UH+XKPO9R+CtdhueTSfPgt/mafd/muT6NGI1+7Rc5rinLilfOfh34Qlqci1eeU1pIt1jkqlkfp7I9N1XrWj+H9IpZatbYsMFTf+i9zvyw48kr7N/wCK6PM9f+BMnU5Zs+l115sn7uoVxXsmuP5Dmcyv3JuFxnh4XV/Emq6l1OWpz5HvGoRT2gvRHY6V8V63SSUPnPLHxHIu7+vJzM/wR1fp+e9bp3igv+7B90ZfZr/JXn6fnwNSxNZEv4XudH2WajGXKe3vtJ8Y6ecYrUY5Yn6reJ0sXVtNq1eLJF/Z2fKP1+baU1KLXiqNGPWOMlKEqa8xdMzvBP0r5r+31iD70M12nz7RfGOs0sowyZFmgvGRb/zPQ6L4x0WpfbnU8D9Wu5f0M7xZRpjySu8pOWyC0orcTBqMGox9+DNDJHy4uxZT7nRnppKM8iSMmb9pjlJ8I1LGruW/sVZX2PtgvxcjhPO6zBLFneNv/qQ7U/dcHI1sHB4c0W01H5Z6TrKxzxpyi0k92ufujzrhkl34HNTjJdykzfBnk5HUb7+xxcZVujj6iFM7Wp/ebbbW2/JydV+Nv1OrBz5RlSoMSNd1Dxj+zNGbRpp98HXN0NNNOjLpsihk7fVm7JXbaX3Jq5WSUbY8HUaEbTk9yR5GVJkS3GwbSVEmr4FwupL7jLFvmvQ2aedRTvZmer3QcLcbjfmzHJ1cV1XXwSutjXBnO0+RbXubI5L4OfKPRxu2uLSZap0ZITtDLIyWkrTLKUZ82ztiSzKPlmDVaqk0nyPGbTlloZ509r3BBurZlxp33MueWi7GVz2uc0hZZFXgpc/Ikp2CbkOWUWuEUTklwO7e1AWK+SohTvJ7Ebp0nsacOOGOdyV+w7WNvbGrL0TKva/zA47Nvg0Sy/KVxil4MWWblLyEhWK5teNyjI/UvjhyZpdsE23SpFnUdC9DCFzub5SLZ1zpY5NJl2LGlH3A3dDQkDPS6C8ByyaiCDE1EqiI9sOqzdqklyczvtt+S/V5u99pmOjHHw488t03cLJsgUytMwXAaDZBhPACb2HgAHgL5ISwCAYasABKBwFAYBLIQgBLJYLCtwAMlksgBAxcou02ABNh7b8OrtJS2ryaI5FPh7HJ7qLcGpeJ0+GZ3FUrpsCdghNSinF36hbRGlbR8AvYjDjxynL1QgfFBz4Ek6m0aI4vlw2Znk9/cDSyLcAPIEbx+Z28KUcMI1wji4V35YxUXbZ3FJJU/BGSo+pUPFUVQyRa2LYuzg29CU8VY8Y924sFZalXBJmUdhnCmBSpbciqTbtsQXJRXknckInfAUt7YtmZS7k16/1OXr/hjp+vUn8lYsj/AH8X0/04OtB7DbJcjmVhWSvCdT+BdWo/sVi1cF+612z/AJHlNf0h6bJ2S78GX+Caqj7K13FWfQ4NXD5epwY80X4nGzfHns9ssuGX0+I5dFqoW4xjNR3ckw4NbGqdxaPpvUPgPRTbloc2TTN79jffD/VHker/AAnr9M5Sz6N54f8Ay4N/7bo3x5ccmOXFY5eHqefT5FLDklGvMHTPQdP+Mc2OaWeKzR99pnlV0ucW3gzqPb+7kFeXJpP+vjafmVbfzL7MamWx9O0nxFoNbtHK8cvKybf1LsmpxS+qL7q8ryfP+iaDL1nK5YJSx4cdfMyVx7L1Z7HHgjp8ahCLjBLl+fdnPnhJdRvjnbC9QeXU4X9NQs4ri8dxUWlF2m/Bbn+K9Flzy0+LunjxPfJHhv2Kc2swauKjHMru64aQSWFcpXJ6jCMmmtpv8WxxNRCXc0/B6XUdNzOPfdQ8OXk5GuwU5yaalBbx8nThkxyjlWrHbSVexXKD7vzGu037G8ZKXza9Ts6PSzlocOozxlHBmzPH3R5l213V/NHHlSSbfk9PoddB/C+LTS0+Ob0+pnlc6+qpxUf5JpMnP0eHtw9VHFDU5fk9/wAvuah37tRvayl5EHPH9pL+ZSovyOFVyl3CwT7vzBjl27MZS7X9xk6WGSlDngkn2yTKdJPZounujGunBox5O1rejZjy+5zYS4NMZ0Z2OrDN0I5gvLXkxRyAllfqT2tu9bqNRSMkZOcnKT2F1E72A5KKaLmLLPPa/vSQHK/cxS1Hah8erS2ofaz72new90Y8srxLNqe75cNo87j4un6rNJ9kV72w7D7oLyrwRStnQ0nw9qc0orLKMIt1a3Z2dN8HYFKEsubL2X9VLeg9K3HmU1yyTltaVHqMHwpihnyQyKeSCf0u6tHX0vwt0yOBOWmcs3dzJ2u3/UO5XdI+eRxZdQ1HHCU36RVmrT/D2ry/tMkflR9+T3+Hpem0meUscIw7lTop1Xy4Y220or1F3Iyz/jh6jpuDpvR4Z8MEk4uV+W1zZ5HX6pa6cZ9jVLyzo9Z6rqM8p6THl/5budUuTlOHarLhTD91kyKmCPhkySt/mOlVFMcjJ7ehm1malZdklS5Obq5ycXtZcZZ5ajDkl3TbBYCLk2clMQhBgbImBB4AIEBKADZLAEAlg8hB5DQQDIyIAlNkJ5CAKHgjIADkhANgEIRMgBKJQLJYvYPjzTx7pm/HqI5kvDRzGPCcoyTTojLE5Xaw4XlfsaoQ+WtiafLhyYo/JlcaSf3HlwYVpCZX+ybMDfubNS6xpJGKhw0ugpqS9xY78hGGjRQvUR3e251mrZzemxvK36HTozyOPpmi0Dwr9rklNtfhX4UxtTqMWgjF5siS8J7spnrs2aU4aSPdW0sktoxBp+n4k1LUS/WMi3Xdx/uebjMq1xyydDDqsWWEJQpxkrT8Mu716oSMYtVSr08B/VY/iTf2NLi6JmsUk1sMlfJQ5vEvqi69R8eVS8NEWLlXWkRPy/5C2FbkqWd6XjcK3EW3Iykr2ALUkSU6+4ncxZOxAZTYqlttsBsFe44HM6p0HpvVE/1jSY3Pn5kPol/Nc/mcDUfBbhkiserU8Df1RyR+pL2fDPXN0ytxt2zWZ2IuMrkYtHp9BpY48UIafDjTdcL3bPFfF3xJmzQWk0lw08r7pr8U/wDY+lTw48kHGcIzi9mpK0zzvXPgbpvVF34XPR5Vddm8P/pZpxZyZbyZ8mF1rF8sw5VCT3S9Dfj1Lcou9kdTUfAfUOnTlkywWqxeJYPC91yjl5tH8uT7HVbU9tzrmWOXpzTHLF1f+K5/lKMsjlFLaL3or6hrMeqhHJ8tRyKPa2v3jlKeTHSkFyb/ADCYyU7dssncfdCptRa8lk1Tdi1as1jKqZRcmkmdXpWqxYoT0udy+VkTUnHk5bdEvYd8iePLRmXy/pld1z6lNqrFllm405N/cSEnK02A2dyuxoNceSteSKVMZWt2lmoumvJs54Obgmu/nk6EJWl6syyjfC+BXJdCVpexTJD43yuCLG2NaYtBa4oRcDxkZ1vKry4nNccFLV2nybU01RRljTbSHKWUZFiT2ZJYX5WxpUVZYl+ZptGmTSxnp23BtOXNHS0HUsmkySlJd6fhmaWPyhYx338BclzGOzL4jyfPxSWPthF7r1Oxi+LsacYrDOUfO62PL4oRe9J36jvD+QvbWcMr2ur+Ko5Vhn27RqNbKktgz+JtKoNxm9vHk8ZHS5JfuyaHejlD6uyS+4rF/wCPP662q+J8uo7vkxnjae2/JxtTqtVq8jlqM05L0vYaUVikr2aduhcjj3N3swkaY8WOKn5UWt2mY9ZUFsasuWEbOZqcrnJq7KjLmykjKrlJssjKmBLbYZqkU8+qNROkymMFOLt7NFevzNRpbNl2kxxy6ZST3Tpl37Zuue3d052fD2O62spOrn07nFpr7HMnFxk01VF4ZyxnliCdBVioazRIk8EDwAAhCAEA3sEDQBE7CBBAIyIhAoQhCAAavyDgKI2BA7AGwAaeSEBYGgLQLA2Iqa7BYPzJYCNOh1r0uVPdxb3R6FyWWMWpJxas8odDpuqlDPDHJvtk6+xnnirGupqpVLtMzZo1n/XkvQzcmcXsKsNEjuNQU9t3S6UZSrc3d69DJoEo4LrlmizOnH1ecnJ1SUfRKkNGPdHbkrW4YTcZHN6axalOEmmWKfa9xFki6tuvbkdRT3XHixe1+l8Mifi/YqzaWL/bwlKDim2l+F/kSElF1Y+TLGMW5ySjW7fFE2HM1alkjBScLTV2h45FXJxOo/FUdNken0eNZO2O81x+RyNN1jU45ynPLK5y/DPh+5nROeS6r2TyqWyY8NuTzWh+IdOqlnaxdzruu4nejqITSnGcZRfEou0TptjnMvTYuBaAp7IL5EtGLJsLYjkOArQsnSDJiSkqKIO4Wd3zsDvT4YspOwIsjB1DpOg6jH/mdPCcv44/TJfmjdLcqyRuN8UOWz0Vm3jOo/B88SnPTZo5K4hPZ19zzur0uTS5ZY8uOWOUeUz6TvKTct0jmdSx4Z6rJGeNS7sS5V7nTx8t/bDPB85zX6lak0qLtYmsjVVTe3oUV5u2dccuRZbA9guNoVbFJBvwIvxDW3V+BHs2wCxO0Vt7ssjwVydMqEvh9NS8mzDqk/xOpL+pz4PYjfHsTZtcunbjNSjYJOnaMem1NxSZrTU1sZ2OjDJfinaLeGY4twl9zRDJ3UjKxrjkusDbB3bATFGkopWOuCRQRhO1PYDjbQyIydqgO48MaOeqbK22gPI/MRyrmWm/Fr5JV3fzDqNZLIt5tqqOW5q/QV5H4ZcyV8jRPOrrwZ8ura2RVcvJXKLk+Byoy5sgyZHN8lahbsujhb5Qzx1wG2GW8vahKhc8qjyWTVGHW5O1NFY+axz8RztTk78r9tjf0N92SeP1Vo5TvyzX0rN8jW4pXtdP8zfkw3hXJjl9zu5cHscXq2m+XJZVw9memywTRzOqadz080l4PO4eTV8ujPHw84mOVvZjRs9SOUyDVgQQA0AIFsAQhCLkAhAtIHAAE7JYzr0AFCJkBZBgG2B2wsAghEQABJC2GxG6QAWLYFuFRFTSyBcaIoWACxsc3Fp3wMoIZJLhCDo4dS8se6Tt+5MmaEb+o51tLZgcmye09tktb2/hVifr8+e3YyW1y7IPtg3Xa0vW8cYxxTxuK/iR0oarBkipRyRp+ro8qrQ1y/ion44cyfoFtrgKjJ02GKcqpfmWPZUjz3SaHa0rpDxu6solKME3JpJbvc5HUevLFFR0jjkUou5+jJtkFykdTW9TwaJSWWce9RclHyzzuq61qOod7TUdPs+yzlTnmy5FkeT5kv303vEDnNycoP6G1tP6eCLdscstrMueE1KKg1Lw14RXCeObc4yknJfhbumU59ROKUO3sv8Aei92xIQkpJ7t+RTEpBlJ5mpvdp9voatLn1Omk82DLPH2vens/wAjLk/ZveVd3Cq236HtPhX4A1nV1i1XUlk0mlav5Sf1z+/ohcmeOE3k34eHLPLUWfC3Vtf1zVfqmLRTzdqueeG0IfezvavHqNJl+VqMUscvF+fs/J6zp3T9P0/TrR9MwY8cIcyS+mL9/Vmv9Wwwi/mxjmcl9Usiu/8ARHn5dZ93ieHq49N9urfLwcpVErlI9Pr/AIZxau3o/wDl3zUrcX9lyjyWaSw6jLp/mY8k8b7W8cu6N/c6eLkmfmMs8Lh7O8lFTbk9huxyDXaasyNdisrU3KXGxZN9wjkkhkkpUU5MmzT3DOVlM5eBwiWu2/U5+sjH5yb3Usbi/wDBsladfumLXS7YZK5VOJpj7Rk+ca6PZqckG3tJ8ma1fJr6xNZOo5nDhu2YWtz0cfThz9nbE5sZKxZR7dxkRbiy2dDU1uLLkcSaDEnyGDDJWhgsHuTI2txb7X9wz3gGhsMWZwmnfnc62Kf0pp7M4nDs6Ghz2vlvdonKLwy8ujGfdsy1L0K4xtJjbxMq6ZVymx4sz/MVjxmidLla4PcsaRmjkWxfGakkvcitMaZLYjQSLkTWF7LA8d+C9JUMlYlaY5YN+CLTN+DfGC9B3EZ9rnPS7CfISZunjvgqnHYNpuEZnFLwVTpF05UUZJbDlRlNM2dpRbONrcne1Ru1+pUYs5Xd8yDk3e508eLg6jP9KpAhJxmmtgtWDto6P05I9npp/O0uLJ/FBP8AMGfEpY2q5K+iy7+l4X6Wv6mrJ+BnhZ5dvJY78fOLxGpj2Zpx9HQsXaL+pKtZm/8AYzQZ7WF3jHHl7WIZCrcYogZKIyAE8k3CgWATcPKIQZIRgQWKmACeQeACMBGwdyACwMiYG6AFYr3Ge5FEDBIZLcmyYaAIyXuRkEDJgbJwC7EDEpCksYFVZKBdkEBTD3ewKDSAtv0Aszi7T/IZalOST+n+xkeQDk39jzrHY4XVurZc2tlpskvlfLk12p8+9mVwitK5dz+Y2pKHNx8v2D8TaCUcq1cIJRklGbXhnKx6pxxvFGbjxsY54W+mF3tryNqVzi0pO16FOd5csu6L2TvtXCFnlnmbl3Jyva/JfDtTSnKMdrturHJr2JCzyXNOSb7VfBr6ZotV1XX49JpNPPPN05KK/B7t+DtfDPwNr/iTszTjPRaO3eSX4pr/AMV/k+qdJ6Fofh/TrR9O067uZVy36yZzc3VY4eMfNeh0/SXLzl6cX4Z+AtF0WMdX1KcdVq1v3yX04vaKPWwwPKrl3Y8XiK2lJf4X9RtPhafdkankX/0x+y/yNJycv2Ve83wvsvLPKz5Lnd16uHHMJqLF244LFGK4uMEZtXlwaLFLVavPDHjhzKXC9kvLMXV/iHSdDXyd9RrJK1hi9/vN/ur/AO6PI6rLres5ln1uT5jT+mK2hj9or/PJpxdPc/OXpGfLMfE9tur+K9X1bUTwaPAtPoace7J/1Mt+duF7GLFoMWCP0xTZbi06xRSSLUj0cMZjNYuPK3K7rP8AI7l/CUZcGSD3+q/Q3tO92/yErd0VtOnMctn7CSdqzp5dLDOt12v1Rjy6HNj/AAx74+3JWysZJbiSiqHn9N3aa5TM+XJfA4lVkdN7nK6hmeNyrzG0dCavezkdUn8vG7/Ek2a4e2ebwer+vU5JeLZlq5NmnVLt7kvLZl2Xk9DH04s/a/Fb5BJXsDC787FM8rjkY0nmnHb+wjXkMZWtxpR2sZEgrkNJFmCGybRXm2kxhTkX1Dfi2K5OmPBNSscIrxixyPFLuXKLMuytFD35HYHodFmWogp7VRpcDg6DNLBLn6Xyju6fIsqs585p1cd3CTwtlabXJuUbK5Yk0Z7a9qmM64LYZqe5VPE/cpkpr3H7Hl0YZk1yXRknu3uchZJLllmPUteSbivHPTrxkNGRgx6qPlln6yr9Cbi1x5G9ZEhnlRz/ANYXqF51V2hdrSckap5drRmyZUvJnnq0uWZsmqvguYoz5ZGjLmiuWc/V6pRj+JbGTXa2adRTs5uXJLJvJtm2HG4ubqP1Bz55ZZt+AYN++PruVlmn/wCpXqqOiRx5Xd2LXgX2DLkMTSJ29R8PfV02K9JM3yhZj+H9umx25k2bpOm2+Emz53nv+6x6GH4R4nqrrqGorjvMae5dqpfM1OWb/ek2VHuYfjHFl7Wx4GaEjwMWSURkoOwAA1QCJ+oAxNgXRLAAQEnZEwCNgsLF82ARi0MweQCCsjdAVgehSsOyQEEC0iYQAEY3uRsBACeANtBsDViCJsK3IojpUMAojKJCMQGibAsKAafc20hHPcGR1sVOajvI4HU3/Iwa3pWeLxLLlmnFKT+mP+/ufPNVotT07UVrNNPA26UnvF/Zn0Xo6g8rjl+j5i+muU16nYyQwvDLHqMOPUYZLd9tx/OJyZ8twy1XRjw454vmGPp+o1mfHg0WOWo1E0uyEFbfrfofSPhX9G8NHNa/rsYZtRVxwr8GL/Vnofhrp/SOkaRZemaXFDJmbT7F3Sk/RX4O3HDLK1LOk6drEuF935f9Dg6jq7ftxdvB0eOH3XyOFvLj7cC+TgW3zEt3/wCq/wAmmMceLGox+mP823/liuStqP1T93tH7/6GbW6/TdJwPUazLyvpXMpe0UcUlyuo67ZI0y4c8r7McVbT2perZ5vqnxa83fpuktqNdr1Vf0gv8s4/Ues6z4hk1ki8GkUvpwJ8+835ftwHTaeOKK/ud3F00x85ObPm34xZ9P02WJ/NlJ5pt3Jyf1Sfq2+TbGXdtVNcp7MtQJJS8J/c6dsEpEr2v3E7Zx3i1k/8ZbP8mWY8scj7d4z/AIZbMYLvZOxcl6hSB8vcREhH2LFFeENCI/ZW4bDHqdFh1S7ckN1xJbNHG1XQM+P6tPL50fT97/c9Mo34sbsrhbDmdg7Y8Dn7sWRYpRcZ+U1VHC6xNxnHZPZuX2PpvUtJh1eSKzYou4uFvmL8bnz/AK70PMsurzaeXdixy+UlLlUrf9zfiylrDkx8Pm/UJtza9HuZO43dTh2arLCmmpb2YJ7I9PH04M/azHwyvLtuGLBnl9OxSaWORJo1xamqOfDd7HovgzRQ13WorIlLHii8koviXhL+pHJn2Y91PGbumNLakirNiXPk7nWelx6Z1DJgipOH4sbflM5uWCrgvjynJjMonLxdVypvbYbu4Q2oj2Trw+AwjaTKCufFFcYOyzK6kPhj3RkxU4WCrY6PTtV2SUH/AFMajSDBuM1Izy8tMLp6WPbJIMoWjn6LV91Rk9zfHJaOfKadmGWyyx7cFEsTrg18h7U0Ttppz3gT5QrwR9za4UVyiyu5PYyfLSexO1vhmjtJ2IO4dqi5pAXzX4L+2iXQ9lpR8q95b/cTKoxjaSSL5vYyaqVYpP2KiMnH1OTvyspYZbyb9wNHXPTgyu6Vj6f/AK0fuIx9MrzwGR5L6n9wdt8DtfU/uW6XB+samGNLeUkVbqbRJ509V0zF8jp+CDW/bb/MTqmp/VtHlyeapfmbZ/RFRS2SpHmviXVqShpYS3X1T/weBxY/Lzbejle3DThSfc7F8hpgo92OHZ48DpWJBDgQojJZL2AwJashLACwEBumMJySq8kRBBBQt0SwIGKFiNgYsBCABslgIwA3sCyWRCCEYWwciMB4xBGJYlQBOCBBYAPISUTwAQKT9QWTuAPvOXS91uG5StE8T7+ZerOkko0tgOm3Z523b2uVKeTHJSSaadpnodHkepipwkpbW1HlP7GJ4sUuY39zFn0Enn+fpc+TBmj+GUXx/qjLlwmca8eXa9z8O6rFhzZMMp44dy7k6p2uUegxv53Fxi+H5l9vQ+a9M6rrdLqsMtbp1mlGSazYV/8Ayj/oeg+I+u5tRGOl6ZllixzX7XIlU2vRPx/c8vPpsrnp6GHPjMXR638UabpPfpdDCGp1iVNfuYv/AGfl+x5RR1Wvzy1WuzZM2WXLfj2S8L2BpNAsKSpG2Nw2Onj4sePxGGedz9jjxxjHtSqi1FcU/ctiq8lkKWxJbcDctbDqFuwLauMW/H8yx4Y5F2zVrwOkyyMLQthR25MX0wayJcKb3/mWQyQk1GXdjk/3ZLn7epfHFQ0sMcke2STi/DQrTkLGFeP5jqAsNPkxf9GXcv4Mj/syxTSpTXy5fwy/w/JJlcK4EmnFpc3uaGqFhBtyqu177oD0yvDCUJKfLXc2/U871TC5PHp4K5aqTyU/WqZ6rNBKKV25Ot/Q43WMT7cWbtcnpJLI657PNfl/Y047qoznh8K6/h7OpauO6ccjW5xMi3o9L8X4vk9c1sPxR+a5RkvMXumeay/js9jiu48rknlI7MmZWkGDQMu7NWalbM91+jDBDJk185fiioJf1PDVue1/RnmUdfrNPteTEpr8n/ucfXb+HLTTh/OPX9d6XDqmlnBJfPj9WKXv/D+Z85yRak1JOLWzT5TPrcahO9rR4v416StPqf1/DF9mb8aS2jP1/M8z6N1nbl8Wd9ujq+Lc7sXkNRgWXE41v4ZmUXjxxjL8T3r0N6tq+SjWYn3LKn+JVL7n0mUcGNc2f4jTpGnCcTLn+mZo0DTbu9zK+muPtY9gcsunGnwVxjcjNroybg1JHT02rUqT5MHZaqhIuWKSq/WyLNtMbY78MiZZ3HMwZ3StmyGTu8mVmnTjltbJ2K0FfcErJXCdqBLYLYk7GKDYrDaAxpsVz/CYtbKsL90b5LY53UZJY2ttzTCeWPJ6ccDG2A2qOuPOI0XaON6hP0Tf9Cls1aKP0ZcnolH+YBO222dv4d0TeSWqe8Yqo/c5ul0k9Xmjix8v+S9z1Hdh6ZpYxTSx447yfk5et5tY9k91pw47u6Gv1ePSYJ5cj/Cv5s8TmyPPmnlk7lJtm3qvVJ9RzN7rFH8C/wAs59C6Tp/jx3fdXy593oKBQwr5OvTDQxHQie46AA2SwgYwlkYBgNAMIvkAgSEAgoAWBi2AkI1uMwMAWyEIBjexGAjdiGk5CRIEuRGjYyQIxHSAGikkg0DwFAEojQQWAQDYSAAoAwte4B+g7snLAhkrR51d4uWxIRt2TtLIxfbsRaqLMcUt/JtiouO639jJBNcl8ZoyyaYrlBDKFiJ7WmXRl7UZr2Rx+qorYMYu6rgvUE/QPY79ABYL1RdHG2SEPLL4RItPSuONluPHRbHF5RZGFIVVCxhsWRwoeMPJYk2Ts1Xy0vFi5cMckUpJNelbGmlWwrha3FsaYHp8uNL5DjSe+Ob2f5+Ax1UFKOPInhyX+GXD+z4Zs7dqKZ4YSTjKClH0aHsKp4/maiKe3bEyamKx5lJpNOMqT9h82LPinLHpp7ydKGRtqkvD8CanJj+X3Z4vDOCfb3PZ7cJ+Ssfacpt8M+O8Hyus6h19Eu3tr0qzx+W068H1D9KnTljwabVxj2uWSUZKqbtWmfMcm7to9jgy3jHmc01kWLpIE22RVdDNJROhgptnb+Etd/w7r+k1Df0OXZP/ANZbHElubNJHs3dpsjkw78bieN1dvt2zVp3WxTrtLj6hpMunyL6ckWt/D8M5vw51OPUemYJuXdkiuyf3R2cdXufG8mN4OTX7j1sbM8XyfPgnpcs8WSLjOEnGS9yrP9capUeo+OOnLBr4avHH9nqF9T8Ka5/pueW37q9D7TpOac3DM48Xlx7M7HG1cXDO4NccFujfa214NWuwLLHuX4lwY9D+ORecXhd1uluKo07LE+5cASt0YWuuRox400gZsCcNizCu2r4NDh3R4ItXpy4TlinTex0cGS1szPqdNtaW5Vhz/L2ewezniuxBsZ2VafKpr3L6bMr4dON2rcN+UT5S82XRhvwWLHsSrTHLCvAqxmqcaK6KTYz5Y1H7HE6lLiJ3NRtBnneoSbn9jbi8uTn9MkqEYz5A0dTgKb8Ufl4Ma47vqf8AgxY8csmSEUr3PR6PHg00Ja/VpLHB9uKHmbM+TPthybdDp2lxdL0TzaiUYSmrk3+6vQ811PqWTX5pbuOJP6I/5YOo9Vz9Qn+0k1jT+mHhe5isy4uDV78/a7l41E8kohDpQgrQbJyMF8joShkIoYGxLJTHDSkEAQCCtjAYACbhIxUAKxhWwIAPZhFkwEJYUKFNgYsIA8CApgW7BY0UA2dUkFb8EoK/oIxBdBIARMD3CBgSJk8g3IBj4IREoA/QMVbrey1RpXRNvK3C3LtvlHm2u80UmixQ2RTB29lf2NMU+1GdXICssgrAovuqiyGJ8t/kRVw0FXk1YiqEE2aYQ9CLVyGhEujEGONqjTix7boztPRFjtcFkMVPfYvhFJcD/Lu2TaokY1RbGIYQ3LexC2eiLHXkjVcMbf8AL0HUfYRkhDy5BcfRjdt+A9rQhpS40xXj7nsaYQ7rbEcaxya3dMZMWPHKWFZHXc5Ob+3BXqMaennKSTjTaTXPg2J1GMWqXakl6Mo1rhjxRhJ13Tio/fuWw4K+c/pG0Ky/CObIpb6aUZfU+HdNI+KZbe3ofoD490fzvhHq+CKTce/JLbipdyPgFNxV+T1ekv2vP6marPZbXdjS8kWBzlRcoKCr0Oxx1RHDv6mqPakiuKqV+gYu3Q4HpvhDqy0PUFppySx6iq34kuP58H0RZE1aPi2aUoNShJxlHdNeGfUPhrq0esdMxZ9lP8GRek1z/qeD9W6Xz8uLt6Xl/wDRu6t0+HV+n5NLJ1L8WOXpJcf6HzPJB45yhNdsoumvRn1aNI8V8Z9L/VtWtbijWLPtOuIz/wBw+i9V25Xiy9Uus4pZ3x5ie/oZf1f5WbujxLn2NU9mBtNU0z6TPHccHHlqlhzQ6j9SKrccqXg0qPByZeHfjdrsSXmjSlSM2NFzmvUzrWJlVxZy9Tjp9yOpKXcqZnzYVKNBsWBocltb8HXx7xODh7sORVR2NLl7lZGS8Lpo/Cx4ytCtWrJF0Q3gZCktmypjTkzaz/pnm9a/2h6PVu4tHm9b/wBZo6eFxdT6Z+SKMpfhTYYxbpU3Z19LpI6DB87Mv28vwR9Pc2yy04p/S6bBDp+J5c6TyVbXp7GHXa6esypvaEVUILiKLeo5H8rHG23JtswLYMcf77GxfuSgWMiggAtUKARgYaAABsYRodMAKCK9wjgHYgpLAh3JZAAYg5CgLYAlihe4ogjFkOkJPkAr8hAFABJewK3CBoh4ixHW4qRkFA4IIGIweCWMCAOzQogICEACB37kDYG/Qt7jKW+3/wDwr8+xbjcV4PLr0BjBOfd3OMvLNEJvaLqK9fDKobsug032vdPkmrizHBWaYx3M+KPZfZv7M04n3rbn0M8lQ8Yl2NJsEYdrT5LscLM7WkXY4JNUaoRpfcqxr8i6Dtc2Z1WlkFfA8YXta/kSEXSe389y9LjYnZkjFcKvvRYo0hlHzW4Um/G4jVuOxFfBb2JrcChvtuACMW/Azgl4GjfNjNUrAKpRdUtiqdpVWzoulbormnKUb4TGGbUpvLGST7Y7ujPrIKTxOdNRmpU/U6CaUpNq02YNbFYo/XwpKVv0scKuT8SaJajp+XCmrzqpJeXTVf2PzXDDPFKcMi4uLv1PsP6Q/wBIWDTZJdO6Jm7s+Od5NTFpxg14j6v3PkWXI5zlKUnJtttvltnrdJx5Y47rzupzluorbpbbeCuUgymvYpbuR2ach+4fHHe26Kb3ovjwPQDMrOp8J9bfSOoLDObjp87UZekX4Zysr2Mkm+7Z0Z8nFjyY3G/s8crjdx9vxZVlSae4us6di6lo8mlzfhyLn0fhnl/grrctdpFp9Q7zYEl3P96Ph/4PXLIknufI83Flwcup+nq4ZTPHb5b1HRZen6rJpc0anjdfdepicqZ734t6S+qYP1jBG9ViX/1x9Dwc8Tjzf5n13RdVOfjl/byefi+PL/hnFZYqPDXDNMN6ZiUmjZhmnB8Wac2H7i+n5POqujuF0BS22IcrviJ7+w1AUNy/Hj8vck9MWXE27RZpJuLSs05MafsUfL7ZWhWnI6kJdyRGU4MlqmXMlrFc5FLe5bPcr7km3t9O73GnKqtVglGKctu6Pct+Uec1/as8qul7HsdF03L1CX6zkVYU79O9nFh0z9f6/qI5JduKE220ttuEbY2YY7ycfNe7xFfQ+n9sXrc8PoSuMX6epRqMktVnlld7vZeiPTddWPR9LWOCSeV9ley3PMx9SukyvJLyVy807fDD1P8A60I+IwRj3NXUXeqf/qv7GY6EQEgkQQMX4AwEDQDgAdgeQ0AYUtiMiAGAREboAPkjQFuRjAgYVwAAhGQDYqEsD3JyQCThCTY7WwkwCtMNgXIQNAgCBoiyLK0OhEcjYEyMNAb2AQiAhTIQgGhCEEEJRCAH6EirHiiRVL7jJUeXXorIouxx3W5VFOi/HXar58k1cWR+lt82asKTW638P0KI0jRB7bcGWS40RUor6vqj6pbr8i/Gu5KpfT6ozxa2q7L8aan3X2trxx+ZnVxqhFt03tRoikkl6FGOVNd30vi/DNcFt4M6uGgk/BojJQ8WUxdeB2iNGsVt8DR8labSSQ8X6jB0iS23DGkyS+oAElcfp23A4u1XAXT43Qnau66ADLlOr33rwVtuOOTlTp8exdJpJRf4ZGfNKMMGSWScccFbc5OkkvN+B62KkpR7Yu0oreV7bHyH9Jv6RsfUJz6X0bLL9XS7c2oi6+Z/4x9vfyVfpC/SR/xRS6X0ic8ejSccuZbPP7L0j/c+YZclvnY9Ppul192Tg5+o8duJc83dKqMs5Fk3RnyM9FwlctxbFbAmAWx3+5cmZoumaMPdkkoRi5SfCSFaBlumZZJynUYtnqunfDumxwWo6zLNGLVx0+FpTl6OTf4V/UzQw6f5yx6bB8yUnUVdr7e5HyT1FdlrN0Oes0WrhqcEG+3aS8SXlM9LL4n10v8At6TDFfxTcn/Q5CwZc+HPN5K+Sk3j4tXTDHBgx49HmabjKSWVPw27X80c3Lw8fJl3ZTda4ZXGajtQ+J9Ulb1Ok2//AKTf+Th6+WHX6jJlWswQlN24rG4qx9fKeHJqNOo4VHvklUVaV7Fk+nxnr9K/lYViWCMpxqruNtj48MeP8JoZXu8Vj/4TmavHPFlX/hK3/IpeLPpZr5mOUfujVh0nftJxT5Thwa4vUYY03HUY/MMqu/z5N/ky1pnMJLuMcJKStFkV3BisGVuOGPyMre2LJL6ZP2l/hlkITjtkg4TWzTMa7MMv6kYouS22Ejsy5bkuiB22txXiT8FlURiVokIdrL2rSK0+GN3/AIUrbe1JDkK1TnjwnaT9Do9G+FIanJk1eSUnpGl23s5v/Q6/RvhvLmg8usiljml+za3O3rF8jDDDBdqS4XCNZi5uTP8AUcLXzWmxLFiSjBKlFeDndL6au6WTh5JOUn6mvXp5Mij6s6Oj03ZFWjzvqfP24TCfsuLDd28j8Ypx1WnwJbQx935tnBSXB3PjW49apPZY4HC5PV6Ca6fFwc/nOuf1aKjni48SgjIb+qxr5EvHa1/Uwcm19lPSIlgolAY0RoiZGBFaJQaJVDMGCIWgREBDQAp2ATewgIhhLISiAQitjCiMFyQINgJBMnA4skAVojIiOwMA8ADYGKGQiY6YEK2YwthsAJEAIgNktEQPIAbAw0BoAgQIDYjfordBVvcK3GinZ5NeiaD9di+CtFKhb5NEfpSXJNXFsVaNGOnsiqC7dmXKvCpkKkX449vBox0vsZotl0HaIq41we3CfsyyMnDdNyXmPn8inG96LoSqSZCo0wywy/hey5XlFvnkzpxnK2/q9Vyh+7s/Hurru/1JqttEHba9C6Md7pfmU45dvDTXhl8ZbfYkJdh2Ub8+GT6Wt+AyVRaXpsA2q7aUk3d+gE9tt2Mou3fgo1ut0vTMGTW6nJjwYscbnkk6SRUlviJtW6jPi0+nebPkjjx405SlJ0kl5Z8M/SD+kTJ16ctB0/JPH02Lab4ed3y//H0X5lf6Qv0iZviCctBoZZMPTYu6e0sz9Ze3ojwGTK35PU6Xpu2d2Xtw8/Ub+2HzZb8mWUtySk2yps744knLYzTZbNlMmAK2SIo0VSbEFuLFLLkWOEW5SdJI9h07pmDomljqcrhLPL6t+EL0n4f/AODaTD1HqOPtnqcfzccL37HxfpfP2Mmr1ebU545pwcsKd1W0kc+WXdfDXHHRsvz+q6mcZZO1tdyTe836A0qismnzRg8csXdjzV4dOpAksMcsd8mKMl34svKaJl1byT+Yo1lnHsydvGT3oFLdJN90cs59vz8UseR+k0tn+ewubVQyYs0XjUfmwhSX7so+f7lUcUsm3/7YstWjyKDa+jbwADNlxavNky/IccmSnJxt7lk9UnmlklCUZPD8m6eyqjLLBNaZaj5jaWRwkk94+lluLG8kbjkkve2MLtK8MY9sWlXCNOxgnjmm3NLL91T/AJomOUnLtxZKl/8AHke7+zEGjU6WGdbpFMM88TWHVNywx2jk/eh/qiyOrtuLTjKPKapoOSKyxp1K2Bo4yg1GVNcxmuJIsjPansYseT9Xyfq+WVYJP6Zf/HLx+Rb2Z1NxUJzkue1WTca6ePk/rVGVh5ZNL0vqeor5eiytestkdrSfCmsf1amePHH0juw7F/JHEm+xJnoPh3o95ser1Ud+YQf7q9WbdL0HSQanGDmoO++TvuZ1dLjSl3euxpjjpnlybb1K4rY5nVJ069jpqo7HJ6q08jLYuLTyayCq/J2cWNqKOVoUp9Qaa2UWztRR839U5NcunTwz7XgfjfE49ZTd74ov+55/g9Z8fYXHV6XMltPG437p/wC55J78H0X07KZdPjY8zqZrkqjqEe/SKXmMv6M5h15weTFkg/MdjkPY6r7Rj6QKFsNiUnkjZACAgJwAYSQqYzEXIgfwRC2MgAoIt7hGEJZAABvYVsjAhAQBboVgDCt7ksgQKmqYUGSAAieQEsNgEQULvYUwB0HyKmNYAbCl7gDySB4IAFgDEATcAHklBA7Gb9GwVRv0LI7JMRb3Y8Vex5D0oZeqL4/SroWMK8fkWxtbeCKuLMStW+C+tyiPKouRFVFsfBfj59fYohykXwST53Jq4ujdlt+fUrjKtqssTjfH8iTXYmlX3o0+dmY8Ta5dmhfUt/uTQsjHtkvltRbf4X+F/wChphlcn2Ndj9LM8I9tF7iskaf4SVLU1uhkrW5S4TxS7vqnjrn95ff1/ucP4m+POj/CmGEdVlln1E/wafDvN/f0X3KxwuV1jE5WTzXW6r1jR9E0WXW63MsOHGrlJ8v2S8s+BfG/xzrPijVSXdLDoscv2WnXj3l6yF+N/jnV/F2uUq+RpMSrFgu6fmT9WeRyTau2er03TTCby9vP5+e5eMfSvUZO7eyiUmwzlZWztcgSkI2FiyasAWRVIeTEYEVnV+GOmw6l1bFDKm8GP9pl9Gl4/NnL3Z77oHQs/R/hXB1fN8uK6rKTx7/WscNt16N2Z8mWorGbrN8Q9S/WNU4d9L09F6GHTSnl/wCVUn3bzxO+Jen5jrFmz4vnQx/Mlq8tOSV/LgiqUMum+ZkafZhn2d/DbMp602HNnWrjjg8DjmhadbL3tDY8Se0ba8v1Co1at/MybzfovCLoR7EvYegvhHHhhdJUZcmbPmxvJhipx4qL3X3QY43q5SU5PHhgryT9F6L3YuGMs2eWaEfkx4go7UlwIaTFLFotO8U182eX6sv/AIr0/IKjLRSUJVKD/DP+JeDTPI8i7dRp4ZlX447SKcukhmx4ownOTg2op8qPowM3ffG5Xkxxyv6luaVgUEkCUFQExSlGX7PUXaVQzeYez9Y/2DB5MT+XlVTXPp916otzYY5IOLRlxqc4rTycvmYleF82vMP9AGz5sayQafk2/DXV8ug10FOTlGP0yj/FD/Vf4OfLO/lRm8cu2X4XRkWp+VqoZHCSSe+w4W32ZZFKClBqUWrTXlGLL8zPleOLpfvNPhHI+FeqT1vTXgV/NxOo/wDo+P5bo9HCENNiUIq5Pdt+WaLimX7OEYRVKuCzAns6oXs7pKzTCGwGZrZM5PUVeV/Y60tlRyupfTKwGnL6bJR6k16xkdk4WFPHrYZeLdHahI+Y+rY35o6uD0898c4HPpePPT/Y5Vb9mjwTlvsfUviDT/rfR9Vh5csbaXut1/Y+Ud1M9j6Hyb4bh/HD1uOs9roTSkrORnj8vNPH/C2dRSMfUMdZITjxNb/c9fJyY1jD4JwSyYvYgCQKCkCwAAeyF8jCoDFDIVDRAIEl7k3AksDYRWBoANgYAasBCWAAASACiyGA9gBUrC+AMl2BoREJYgZDorQ9gRgpoSwp0A0PJAXZExCmITklIAjZCEHo36OXFeB1k7Iv6L91yiuPhF0Wo/Ukjx3pyGTlF0vS7Lsctveihzk432q34LIN0Kqacf8AMtjtyUY20+LL4u9yLFbWwdMeEqq96KlSdodf4JVGiLd+rLIy9yhWqd/7FsHvbYqbRj3fk0wnSM2PbzXsW/UuERRGpO/qv7ssjFtdy8GXH3c2aYNtV3EqivXdVxdM0Oo1ud1i0+OWWTvwlwfmXrnWtT1zquo6jqp3mzScmvEb4S9kqR9l/TFrv1L4TemhOsmrzwx0nzFXJ/2R8DU33Tt+T0+h49Y97h6rO37V3zKSKpztglLZFcpHe4SyYjkwvgRjANiN7jNiy5AFYrHYl7jC7S6d6vPjwRtTyTjBfduv8n179LGHR9D1+DoGh1Sz4en6PBplJbR72k5HzD4Vh8z4i6fatRzKb+0d/wDB6/41zR6h1nJPNlWFZMtyn23VJeDm5fzjXj/riy0eqx3LSzhNr/4civ8AkDU/N1GsxYdRmWeGCHzJSSrhW0/z2EWjenzQyK8sItTTinHuSNCljeDW6nt7XlnDGld1bt/2EpVpnPJ35ci3k+5jLLOeT5eKDnLz6IDn2Ym47rwvUMseVaJrRPvnLeck6b9l9hg0s2o0eFw1OGGXTSlcop32si0spReTQ5Hkgucbf1Iy6ZfqmgyPVPI/nNJY2/qXuN2LCtPqNPOcI5G6UtpKhBrwahvaSaa2aaqixa6Hf2RjcjJqJzy5YXJuWWW7XLGlp2n+FSTi49/Dj7MYXrVrLJpbP0fIW7MuFu03Gmtr8l9ryIG7b8mXVxeKKy4/xwfcn9jS5XshcsO/G17AVYMj1H69izaZTliyVm+Wnsv4v62Zct3lxRyyyKcv3vCOhpJY54MWGTdwz/LlX8E1X90c/wCasUpY1FfS3HdegyrufDXWf+FP9Yf1Qi+zLFfwv/Ro+h6bV4tbijnxZIzhNXFxZ8i0lp50r+qLl/KjrfCvxDk6Lq3iz3+q5HUlV9j9UWcr6jCN7lydGbTazFqMalikpKuUXOcUuRrTJLlXRx+oP5uRQi78ui7X63tfanu+CaDTvteTIrcgNwOpZXpsPzKf7JqW3omd+LjOKnF7SVo4XxHBLR6mnv2S4+xs+HNS9X0TRZbtvEk36tbHifWeP7Zm14MvOm+adU90+T5T1bSrSdQ1GBf9vJKK/mfWm/B87+NcCxdbnJf92EZ/0I+g565Lj/S67HeG3ATpFWqXzNPLbeLTX2LH6ESt9j/eVH1OUeXj4crcg004ykn4Ypk0EIAgYMV7BA+QAMCVBYoAyGiLFMdIAIGQAElgCxWOmhCAEQkAEDBgCBAAoDQzFaAFonAwrAJyAagNCMLHXAiGQAxLAGhkKZCJEEDIi2BZOQBgWSyDD9HIdWJHYtirb8WeNXqHTHVPlu/DBFVtV+Aqr5EpowtSdSSXv4Zb5oqw04qL4fJasixtW7S81uvuJUN3b+xdHf8AIrclJeN91Q8HaIpxde6ZZGSadq6RUuC2CVE1UWwb2NMGr5pIzQv0Zde62JDRF7XsRZHNuGOu5cy8RKPmyzT7cbUY8PIv8F2HEsK7Y7V/Umm+afpqySw6DpWnbbU82XJKT5k1FL/J8YyNRmz7Z+nHF3dI6XnS/BqJwf5w/wD9T4hmvuPY6T/xR5nU/maTFbInaJLg6nODlQje4WxWwKgwNojYtgEsrfIwrQB2fg7/APMOmv8A8tvyPW/Fr08+tahZe6GNzl/01bXFJex4r4bzfJ65o5cXPt/mmes+LZY/+MfNcJTxTSl2qVW3FeTm5fybcfpzc2XE82KWDFklkxwUIW+a9kU5Jy/4S8kuZau2q/8AA0abJpI6zTSw4YxblTySk7i2U3WizYZNP5epTf5pqxqRSyYoJ58UsakrTa5LMcGsGTVRzSwpVGFL8bLMWryYofLyR+fiezjLlA1OLDrowWkzLE4KlhntXrQvIJ+s4tZia1eH6o7LLFVT9LBP6qyuP0QXbGK8I0vHCUIaaH/Sx7y/85erM2Sbbk1SjD8K8SYAsceOUJZZOT1EKkoJ12omTI3Uu50+fuM9QsudZ1FPLKFTXCv1Djx/rc1ii1GCXdkm/wB1AC6VfOc8+RtafHtS5nL+FDSxKOm+ao9uSb74pPaMfQmXJhz6nHpMX7LDG1FVwuX+bDkyfNz9qaUoq1H2Xj+QAuDN3Rvll0sn0MxYn2Zp41wnsxtRl7Y/YeiqvF9GLXTjvKMYZIr3U0Y9RqNWsuRuEYuUm3FVtY2HPKs8Utsse2/TdP8AwWfJ7pyyt/VN22PZ4cdyVaOUvmtzbSao9LoMVRTUYqPqzgrCvSjp9O1702T5WfeD2T9CLduvjwmL0Wm1WbR/Vjlt5T4OvDqvzMPc9mcJSUsd3sZp9RxYNZh0+SfbCfMvCZeF86Pmxkm3pNLjesy99XXFndWKMMSjXjwZum6eOHHG1To2yaaNLHJt474pTx6TV1/8cv7GD9H2teTpOXTPd4cm32aNPxllf6tqkuexnmf0f654Oq5dM3Uc+O0v/KP+xy9fxTPp6fHlrOPpDkjwPx2l/wATwvw8X+T3UZd0TxHx7Dt12ml64mv6ni/SPHURv1fnjryzYVtuK+Qn19eSx9QX/NzaqpfUZ0a9fHbHPzVMxmVaDZAEsIBbIBsl7CNJMVhe4oA0bHWyFgMwAAfIQAEBuEFgSAQSAaAI3QEAFgugge4EiAQgGAHwMwcgAW6Aw8AYGCCBBEDWqJYobGQoNihACg2AIBCEsgg/SC42LISatlcWPF+p5D01tv1stjuVwdFkdxVcXY14aHarjZlcPuWKTTWypE1UPCF7pJeqRfjjSTKIPds0Kari34JNbGK7UWRW3ohINuN8O/5knljGLciKppg2uHt/gTunklv9OP35l/oinE55H3S+lL8MP9S7vbbtiG10Gl21VVtXBoTvfwZISpr0LIycXa4QWDbxn6YNNLN8IvJTfyNVjlt6O4v+58HzI/SXxxp31L4S6rp0rk9PKaXvH6v8H5vz091e6PT6O/Zp5/VY/dtni6C34EumFu0djlRithYjY9BGxQsDdBogYHdBsD3DQW6Bxhr9NKeWOGKywbyS4gr5dHves6aGoy6SU8inh+csTnHhx8NfdHzxbM9rocq6l8Nzxx3yQxxmvVOD3/oYc087a8d/TLmeDVZMuPHjw6PNiyNU3tOKfv5Qv0ajV6nHg+v56+nxbW/+pjxpTj3Sdt8t8sGTIsLjOH4ou0LSm7T5E40WLFjyTUnFWuGc1alxyN44/TLdFy1OZrZ9otqmNdWChFUtjDmWKEpXO4ye0VxfqY5PJN/VOX8x4YlWwrVzBe8kVj7Y+Fsvc2w0z/VIY8EXLv8AryS47n6fZHLnhlJUtmdrov7XCsbd5IOq80Ttc4nLyYtRpcnzMuNbvZx3SMbjmljzarHKpYZqtuWes1WLHiVzpp7NM892zn8zTYYKOFZHJS/iv1K3pGXFr0oy6iE3jz4VayreK5i/KHWlnlfdNv8A9TVpumY9Okkt1vZsWn24JubTDg/rlfqqguAqDo6j0/qinLgpWie5v2SMqjbJmx9yRZfa6LNNp82tyfLwx7vV+EK5SeaBx6h4dP8AXkf08JnG1eryanK5S3XEfYmsyzlknCcWuxtNMy91HdxcepuvO6jnuV1H0r4E6+9bpP1LPkctRg4vmUP9j1WSbjByeyR8V6b1LP0zV49Vgl25IO17+x9MzfEOHX9JhqMFRWSP1L+F+UGWOk4Z78OF8SZXn0OsyV+60eI6NrP1Hqml1PjHkV/bg9p1uff0PVSf8B87uvNE5Y92NlO3zt9vi4tbSTT3PJ/pA0/7HSZV4lKJ6Ho7ebpejyS/FLDBv+RzPjjE59FlkrfFkjL8uD5fpL8fVT/67eT7uJ87VrkZNgb3FPsbXkBq4qWnk1+60znt+h0JR7oyXqjnNOLozsXL4FERCCNGAIt2w2BbAtyMCVsAdbBbIgMDEBAABA0RE8gEpkIyDgDkiCAWwhNgBXAEWiJeoQAaVuB8DcA3AaAFBYAMKIFgEBAQgwKCgIKACl6hFTGsCSiEJYtB+j4vYsj/APdFUb4RZB34o8h6i5NepYlwVQS7i2L2QqqLISUUy6KtRdPcoi/qa8F8W6ST2JqotjG+CyK3oqjOw/Np1Defn0QjXRyqNxcXJviP/wB8D48Tcu5y7pe37v8A9+pVBdqck7k+X6l+OVO1sxFtYou/pt/YKf1NP+ZIylKotvkn7z2snSlkYXTTHVq0JCV7do8rXPIA7jjywlDIk4zTjL3T2aPzH8QdOn0nq2t0GRVLTZp469k9v6UfpqGzVq1yfFP0z6D9X+K1q4RSjrNPDJ/+qP0v+yOvpMtZacvVTeO3zeXJFwTIqlS4BE9NwC2KGQrYEDAwsRsAlksBABkd34X6j+qar5ct4y3S9fDX5o4B6v4K6PHPPJ1HUL6MSaxX5l5Znya7fLTjluWlGbRZcepzKKUcLm+xPmgQ00E94t/c7Wph8ycnXnkxPC02cnfXoY8MUxwQf7pYtLGtiyGNmjHj23H3LmGnPyaSS3SskMfO1UdGUUuUY8k445e7CUdsBYyrBnlpNSssJNSXoPPVKK934KscHkk5y5GWmzLqp6l3Pj0sfDjj20jOoVvZdhdSFarGNmPF+ZojATDukXSkoxZFaq5qNGHVTjHYOp1SjZz558WSajPNGMnuovmSHjjtjyZyNfTul5uoT+bN/LwKVX5l9j1Gn02DS4VjwxWOPovJj0U8OPTxcJr5dbtukZdZ8Q6LTtxjk+bJeIf6nlc15OXLUh42Ob8X9Ojhyx1uGP05PpyNeJf7nmGnfB6TUdcWui8OZxUJfu0JLpuDNC/lqKfDXJ7fR554ccw5HFzdP3Zd2LzyVHX6V1JaZPBk/wClk5Xo/U52r0702Vwl+TKE3e3g7/FjisuN0918Q9mP4X1Eo1+Bf3PmjezPYZOrYtV8K6rRzbjlxxTin+9G9/5HkFu6aM+1dy2+x9Cm/wDg+h//ALEP7E+IcX6x0XWY0rbxtpfbco+GNRHP8P6GdbrH2X7rY6ORfNxzx1alFpr7o+M5L2dRu/qvUx84afIpJJ7egC3PjePNODX4ZNfyZUz7fC7xlePZqh3bmPUw7M0v5myuSjWQb+XP1VMnIYswLJfAaJUAvkZisDQeKFirY9UAQAQMAFkW5CLkYTgnJGRPcQTkjQEw2AAAQAEIQjAIyIAUAQjIS9gAPgAeRWBowWFgoAlkJRACEIQAKYUxaIgCywDLFJpNEcGhbJ+jUvJZDgzQvF9W7h5XLX+xrUlScWqauzya9OG3XA8E0+bQsZKXKaXqWQjTdvbwTVyHi16FkZOmitJLz7gjKWeTTfbi8eshKXKbyfTjapfin6fYshFQSUeE7+4mJxhDtikl7DR+neX5C0GiEr2L4VukZYOSlcjRi2XgQWb1afkZSkm9+QWkqDFKk1uILo1slz5C22xIq29+Ro3C1Ji0e1il3fkfPv02dK/WOg6LqcE+/SZ+yTX8E1/ql/M+gQlDfbcw/EnSf/xB8PdQ6bVzz4ZRh7TW8f6pGnHe3KVGc7sa/LueJWnuX6nHPHJxnFqSbTTW6fkzd257Eu3lU8kIyyX4Sp8FBLoVuyMFgEAiEskht8Ll/wBT6FocX/D+n4NLH9yKUvd+Tw3S8C1XU9LifEsitf1PfZXcm/c5+e/p1dNj+wSU5cl/6ricNzLH8Vmj5lLk5XpT0yZ8Kg7RR8ynQ2rztX5OZk18IO3dvwy5Cyyka82o7U9+Dh6vqUlmmoK3wrNeszpYu5PlWU9O0XzprNkjb8GuMknly3O5XWKzQ6bJNRnm3k1f2Oisahj43LseNJLbgf5Xc/YyuTpxx8M8INrgtgu1ovWLti0kL8prd+AVpdjkklujNq9Z2J7qijV62GCNuSSRxJ6/JqZXVx8IeOLLPl14jVn1ccnd8xOOKO9/xP0Rkjp1qW8853KW0UvBe9K9Qoxmmq3Ojh0uLHBJQSo03qOaYXK+WHBhyKHZKcnFu2u7ayZdMm7jt7HReHykB4vpuidt+zU04/Y4vc26PWvHUJX2rgTUYu2x9Dosuqyxx4oOcn7BcpPNRKz9XyLK4SXG5zjodYwZdLrJafMknj9OH7o5rZ38Nlwljzea7zqyLVVLh7MwZMbxZnHn0Nd2irUxUsXd+8v7FZRnH0D4CzPJ0Nw8480l/NI9NdI8n+jhp9J1K9M3+Eerlfa6PjPqM/35PY4Pwj5j1/F8jrGsx8ftW19nuc9cHofjjTPD1PHnr/rY1f3Wx55Oz6zo8+/gxv8Ax5nPNZ2BJlepTeG14dlrW5JJPHJex0VlHNISgGdXEFluFsiVsDPHgJKJwARisLa9QAA8hICwANk5IyIAJLAQAnklkAAFgIQAgeAJkADZAEAIBhsgArRKDRAMpGFgAJwQlEAJ5IQNWINOnkuxj0mUYXSovTM6b9CY4ux3D5ck4U4v8UF/dCxbTW/BY3e/ozzK9GLYySS7Va9RvmxhB97a35KnNRkskVcns4/xf7hjh+ZKORu2n+H+H2+4lymwSnNSWS+3xF/5/wBC+G3GxX3KLdpt8DRnsGj2vjJNUOlfG7KU/VWWRdiG18JPZItSspg03zRYpJedxBfClGyyD9fyKItVT/kWKasNGuteGTu3Kl+K7odSED781sXQyU7umtylO0hk1T9UA0+DfpV6Euk/E+ozY1Wn1q/WMfs3+Jfk/wC54Otl6n339LvR8XUfhhaxOMc+in3xb2covZx/s/yPg2R9smvKPU6e7webzY9uQ3cCsaMr2FlZuyKxWFi2BJ6kArJaDQdb4Zh3da07/h7pf0PZZHueU+E8PzOpvIv+3ik/8Hp5S3OPn/J39LPtMnfAzWwsAzlSOd2xlz41K9jDkzaSKnh1OleXudxyRdSh9jbmyOMW0c6cvmN7bmuKOSbZ56ZZMySblD35OrpsHalSqjPo4Rc/qa7jpY40qDKlx8cg48NmiGnBjvajXCKIb6Z3jrnY5/UNVHDik7VI6OomknueM61q8mq1v6pgfcvPaXhNsuTOYxTkyz6lJqFpJmvTaNadb2X6PRrTwUUt/U1xw92zLyy/TDDj/dUYlvya8fCElgUN0PhfgjbTS5xpJlOXNGEfUty5FGHJyNTqXKbinwEmxlXR0nTNT1SalCKx4b3yS4/L1PWdP6fp+nYVjwRd19UpcyMfwzNZekYbe8XKP9TqHhdb1GeWdwp4Yz28z8baB5tLHW44pzw7T94/7HiXyfWc+DHqMGTFlScJxcWj5d1DST0Ory6efMJV914Z7H0jqe7H47+nB1nHq90Zkw7U01aaoDsKPbrh29p+jyPZoNZD0zr/APievjR4/wCBskY4NRji13OSk1/Q9cnaPjPqM/35PY6f8I8v8dYPmaLFnUU3jyU/szw/Cs+l/EOm/Wek6mCVvs7l91ufNJNpntfRuTfF239OPrMdZ7Gw8p++wlk7j2HIwZV2za9GLaLdSqyN+pSZLgMMEBjrgDGwkTA2ALRBgAEFGAwAMnkhACEIR7AEAQlgEBZHYQJCEIBgiBsjAAgihAaEBAANIwBVkAAQKAIxZETglWAPh5LynDtItM6b9DqSfDI8vbGquT4iUX3PshKLfm+Ih7Fjbp2/Lvk816ErTjk4tSb+plvdKVOLUX6vz9zNB2990XKaVVv6gqVZCfdJqUXGS5iyxJp0JGsju6a4kvA8Z/XUtpLx6r1QGuX07eBlJVSK1K2FJ9yqqJNcuNt0Wwe2yKYPtSXqOmvIUbaE29x4u0mrSKcb22LO6t/URrFK2PFN3RT3KuabLMc2ov8AqIbX41LzTKupdS0nStLLU6ufZHwlzJ+iOf1jrml6Ng+Zldzkrx4095f6L3PmHXOt6rrGrlnz5H6Rgn9MF6I0w49+UZ8moPxT8Q6r4g1DjKXbp42owvZHznW4HhzSg1TTPXyd8qzi9bwKajk2Uju4brxHDyefNcFOmGT2sV7WiKVqjojErFfI72K29xgLJe+4QLkA9d8GYO3Dq9S/PbjT+27Opklctn5KehY4YOgaekryd2R/z/2Im733ODku8q9LgmsV8HQckqW4sWLmnapEadMZs2SXC5EwabbukvqZfHF3NWaYxrYez1tmx6OPzLbcb8+53c/QdXodNg1WSHzNJn2x6nHvjk63jfiS8p7nOUXZ2ekddy9O02bQaiOTU9M1LvPpO/ti5L8M16SRGW1MSxqHgZ5FFGPN1DFhyOHdNw8d3P5mLX9ZxY8b+X9cq2SHjNlcpJ5U9c6jkivl4n9c9lXgxdM6YtLc5K8st3Ifp2HJqa1GdfXLen4OqsKW6RpbrwzmPd5U9lO6CoWrL1h8sdYdidr1pmlG40ytpQ3s05IpeDk6rV92T5cFfq0NnldFz6hzl2IzPA3waseHZutyZMfYrKlZ3y7fwr1HBBf8OyS7Mjk542+JX4+56VeT5VqszhnuLaa4afB7L4Y+I466EdLqpKOqW0ZPia/1PO+odBdfNh/+o4upnd25PRuuH5PJfGvS+6MOoY1fauzJXp4Z6zm6fBRq9Nj1enyYJ7xmqdnl9HzXi5ZlG/NxzPGx8rQUi3W6XJotVl0819WOTiymz7fHPum48PKdt06/w3r/ANQ6lj7nUMn0y+x9DhPhWfKIZHBpo+idG1/6zocU3zVNs8P6xwS65I7+j5L6rq5FHJFxlw1TPk+swvT6nLilzCTX9T6snZ85+KMHyet6lVSlJTX5ow+jZa5MsV9bPtlclEJVMNbn0jzGbVr6Yz/Jmc2amN4ZezMRlVwa+qxwRWwQUnBPBCAAtkIiMADFGYACWGgUGwIKoD+4XwKwNLIiWRAQg4CvJHQGgOSIjAIQhACE4JZAABIKBjZGQjAAQKIIIyIhPOwgfF+Ivszw5LkRTfoCMIwXbHZDIrUrHi6RwO9bB1uWKn5r3KIuy6CTW/FE05VsGlH38FrlCaqfndeqKINJFqk3wlfoKxUq75na96utpeJf7lkWpeVZmuM/pluv3kLBvF+Ntx8Tb/o/cWlbbe6/v/caF7yezKoc1JXsPz90Kja+L8IeLuJnjLne/JYm4oBtanHyczr3xDg6Pp32uOTUtVHHf9X7FHxB8RY+kaecMTUtTWy8R92fONRqsmpySy5ZucpO3J+TTDj35rLPk0u6n1TUdS1c8+oyynOXn09l7GGT2ojTbsHBvJ4c9uyyujl9Uh+wi73T3OpNmDqMHPTz9ty8Jqpy9PM540ypNqrNORbuzPJbnU5wb9BJJjN7ke4zIG90B7EsWiex6Rq1l6Tpop1LGnBr8/8Ac0xlbPL9G1z02dY5y/Z5Hv7P1PU4oXRx8uOq9Lgy3itinROynfkthj2C400Y7dUuyRg7stSDGNlkY0Fq5AihmOqKs+RQi2I6ydTliWJzklaRyMWGGolGf7vsa9RCWqlT/CW4cCxRUUlsXLpnZursGNRgkjVCNoqxx4SNMNoi2qeAjD1DKkmRy3Mup1Cx+d2KexlfDJ1LVxwxcO76nwjkwTUm/UKctbqZZXuotqJpWmb9jX0575LHLXJZOUZwK5YHErnNxg/UcLK6jk6h3lnfqJDNLFkjOMnGUXaknwxsj75Nt7+pnn+JrwehJ9uq8jK/dt9F+HfiLH1bGsOaSWrit/Hf7o7UmfJNNlnp8sMmKbhOLtNPg91074r02o0nfqprHli6lS2fufO9d9NuOXfxzw9Hg6numsnN+NdE8WbHrILaf0Tfv4PLuR9D1z0/WOmZsOPLjyd8bg07pnzqS7ZONVWzXuel9M5LePty9xzdTjJluLE7R7H4am/1CKvhni4JvhM9j0HHLBpI93nwP6nq8Wi6Xfe9FjzNJHkPjSN9Rw5f48W/5M9PjkkzzXxo7zaWv4ZL+p430zx1Ejs6rzxvOcMNiLZjXZ9U8kuRd2LJ9rOdW50cm2Kf2Zz47szyaYrI7IhAWJQ2CyAACAlkAA2BBYAAksFhAAQjItwCWCiO7CwAIhCIAiCBBAAQjIAQFhIABk4CChBPJGSiAackoiIIB5CgBQA0HTLrZTDdj17k2G/QCS9BlwLY9Hnu80bteEWLdVyImo7MaLbfmhA7bittvNDrI293TKqfLTdjJ0xKXwlu7dlsK3i6afKM0W4pJMsi9m/C8BpUXxm8eTjvxePWP+xbF2+eTMpyjTQ8cqxJySXat2vK90LQtXxfbxuzidY+KcOjjPDpp9+ZbOXiP2MHX/ihRUsGjls1Upp8/b0PHyyzyNuUm23bZpjh/WOef8Xa3U5NVklOcnKUnbfqZ6oitO29hrT3NZ4Y3yUSQ85JLZFadrccANGfVb45rxRobKNQk8U//VlSlXl820mUtJl+pr5ja8lFHTPTnVyW4pZJCNUMEZCArcZGTpntfh7N+vaDHOX44vsl90eJuj0fwbrfl6nJp5P6Zrvj91/sZc03jtvw5dtevWmqFszyg3OnsbMuqisdLyZIyt8nBXp8R4pIYRPcjdA3M/Yz51adlrnsUZJNhCUuKQ+OFgUW2X441yitloYRotvYCRJOhEqzZFCLex5/VaqetzuOKTpbGrq2pkmseP8AFLkXp+jjGKdbvlmkmozy3fB9Ho1ixqlualFRNEIJRK8qV7E7Pt0z5YrtfBy8uHPmjOODFLJJJtqPKXqdPO6iztfDHT3i009VkpTz7RTXEf8Acy5+onBj3M8sO7w+dStWVvk958TfDOPVQnqdJGOPPFNyhFbT/wBGeGnjcbTTUls7O/pOsx6jDc9vK5uHLjvkiLcc3B7Nqv6lMXuWpnWx9LlKcWp4JSjL/wAXRVLJcn8xLuve+SKbT2bRM0I533fhyeou2TzD3b7aum41qdRDHBbJ3L7Hq8C7UlwlskcXoemjp8PdalOe7fodvE7R4PXclyy09Dp8NTbXCVbs8x8W51k1mKF/gh/c78syhGUrVJWzw/UtY9ZrcuZttSe32F9M4reS5n1WWsNEsllSkhu4+geaOedYZe5igtmy/VTqKh5KY8EWrngSMIPIlIQmxABaIFsjYAGTwSwAEQdgEugCEWxAWAECDYKAIRk4ByAGyXYoUAgshLogBLohPANxAQeSEYaEQhNicgNhZLCARoyBRAB8ZYkV4izYm0PvcZepYpehUkPE893n+pbqrLUvUpUvq24LFNeWBrYvt48kUv4vyFu+LC06VumhGdO1bf5FiVRbKorb09xsufHp8UsmVqMILdtho9rJ5Ixi22koq7fB5Pr3xC9R3afSyaxfvSX7/wDsZ+t/EctYng09wwp7vzP/AGOH3NmmODLLM0pNyu79QRXLJHZbgm0rNGSOXIvd6CchUaQwLl3Ii4oi28EAA6K8kX2SS3tMsFltwEKvLaiDjJp8ooo39Th2avIq2e5hfk6cfTnvskkVyRY2l5EbsqBXRGgutxWxgG9i7Qal6TV4s6f4JJte3kpYPArNzQl15e/lmuKalaaTTLMWbbc43RtX+s9Oxpu5Yvofr7G6ORo4M8dV6nFy+HS+aLLJ6GWGVvks70Q6Zlta8m1AVMrSuRpxYa3YHKEIPksosUaQHSEaPZGXPm7S2c3Rh1Mu5dq3b/oViisSxvU6xze8FwdXBjjGNIx6fH2OqNsHQ8qchnaTKJ2XSdlWSSivAiyTS6R67VY9NH99pP2Xk9XLH8hKEeIqkjk/DeDtWTVyVOX0QXt5Z3JpSVtHhfUOXvz7f4WMYZpybbPPfEXw5HVxeq0sVHOlco8d69vc9PkSXBTJXsYdN1OfDlMsS5OOZzVfJZJqbVVvW4Ue6678Lw6i5ajT1jzvdp7Kf+jPF6vSZtFk+XqMUsU14fk+u6XrMOeePbx+bgywv/FSYLoFgcjtc+2rT63LpncJfkdXS9ehtHKnF+qPPOdMWeQw5en4+T8o2w5MsfT0PWOpqel+Xp25Of4mvCPPdrfhoVaiUOJP8mB6vI/JPFxY8U1ieedz81YsU34JLJHArtSl/YolmyT5m69Ctmm0yDKXc7Y0XsVjxAzWQDIAEDdEIwAEZAAEBYRQBiVYLCACyEAAFBAQDTkHASAChoIGASggXIRBCEBYEjIyEuwMFYQgYBCVsQKEA3JyQiQA0OS0pWzLU9ibA+9KXgdPb7lKLL/I4HcfngKdtsVy+lpJslNr0A2jG90vXYfu3p7lCbi0kyvW63DocSyZpfZJ7yFo9r9Rq8enxvLlkoRjvfr7HkOs9ZzdSnt9GJcQ/wAlfUeqZNfkcpfTFcR9DAmmjTHHTK5A0mTaKC1tuJRohLBLdge7CuQA9qSIF7oCQAHtsAZ7sFAAoVxssoWUfKAOL1iF9uSvZnFbX8zu9byrFihCr7mednKmdGHphl7Sb3FTt0FQeSWzPR9K+HsObTfO1WohixOPcpJq2VtLzvy293sJJRVVdnpMq6Dgwyx4o5c05Jrvk/wv1PN5F9Trwx7BGwWSSaABOp0DVfJ1ny2/pyqmvfwej/CeKhN45xlF007R6/TZo6nTY8qf4kr+5z8uPnbq4cv0vU6LI5O4zN0iRnTMNOuZOpp6b3NimkcfHqe3h0aceo7lyTptjk3uXoJOSaopWVBU02S02kilwV3Rc3YvaMK1Dex7I+BXshipKT8GWc5ZJLHBNyfguyT7Its5uL4hwdM6hc8Msu2zTrtDLHKy9s8sM85Pb1/T88NHihgySrHSUbXDOr3pqrOF87Hq8UZwi6yR7k1vsy3SZtRp3WSUsuO+WqaPE5eh5cvus8jHlx/rqSimVyjSFlqcdX3GfProQ25+xyzp+WXXavvxWSnT3Of1HS6XXYvl6jFHIvV8r7MM9VKbqMJNv2Od1bJqNLhWR0r8eh28HR81u54rHk5cdarja74c08JP9X1EoJ71NX/U4mp0sNO2parE2vC5K+odT1WqyyU8r7U6pbGF7n0XBhy4zWeW3nclxt8RZKavZ2hG22Qh0bZ6BkCwcgaAfAeBW/ABFyh1sIlwOAGwEIASybEYLAIQhGASxQkAAwpbAYUwCUANkAIQgGwAkAgi2EIQAbNKCQAglkIDcAZUBhAwAgJ4B5AGIBEsAmxLA2HwAFMsTVFQbokPvilsOkkquylNdyTWzHtxe7s4Xcs3vYZt77lSn28mTqHVcekj2xallfC9BaG12v6lj0GNSlvJ7xiuWeV1uvza3UPLllfovQr1OonnyuU5uTKWnZpjGduz91/mCu1ErZEk7KSjk/Irl4BKVsVvcYNSRExbsKQA17BFSsNAE/IHkYDQASMNkfAqHnPiLL25oQ/hjZxsdZItvY6nxBvrJJviKRyIy7VR04emGXtbajsqosWWXy+1NuK8eDPdsuj+ApMJOblzYj3Gab4TB2Ta4YBU9n6iss+VPygLFIY0rj9Ukkd/4fyyksuC21Fd1ehxYQUN6t+x1ugTWPWuMv8AuQaM+TzF8d1k680KtvJZk5Kmczsg37jwyuPkqCTpcumzHqL2ZojlXscxSaZbHPJImxrM/DqxdjuLrg52PVOL3ZqjqU48hpfcaWxS8gubMZp5GvI9Fckz5e59vLPMdZXbrpP1ij0eJd8nJnB63Duzqfjg34vbk6jzHo/gbqMc0JaLNL64b478r0PbQUU9j4zoNZk6fq8eoxv6oO/uj6r03XR12nx6jE+6ORKSN8o5eO/10M0oxxyfbHj0ObpsanJya4NGsnL5dLkq00O2G9kdsaHnWNWn4OB1/P8AN0k0t+1WdjW5OyDo811fKo6DUNvft2KkTXjJu5P7ijS3AjRihCIgBEQgLAAwMLYoAYjoVDAEJZAASEJZACEIBgaAYSAAIiEsAlkbolEACKw8ErcBpEECIxaNCIlE4AIRksjEAIQNAEoA3gHKAIDyGweQAoDCieQAeOAojAAEhFuQQfeE7Q1+HWxTGXb9Utkle5xupdXU7hp5NL96X+hwybdm23qvVVpZSwYmnOt5J7I89kyyytycm5PlsTJkcvcWL2Lk0i3YpUFSaFugWUS1zVCykIg3YGDe5OSexL7fcCOkRCqRNwB/YPgS+PuGwAp+A+QLkOwAFIZPdAcUlaKsmevpVAHnviOFa6U07UopnFtHe67BSwxmuU92ee3TN8PTDL2txxc5JLlm/wDVo4qbkp7fyM+haWR8XWx6Ho/Stn1DUL6a+iMuPdlW6KRzMWl1Woa+Tp32/wAT2X9ToY/h3JP6s+px4o1wt2L1DrE1J48K7EtlXLMjWSa7smV9z8eQ1aGufRdBij+01zb9mkZ59N6Yt4axv/8AUip6aE0k5tXy5Mz6rTRwQn2yUrWzTHo9seL9pmv92NvfyWafUfJ1sMkfD/oJCDhi7n+8xIP60TYePt6yWWOWKlHhorZg0WpfYoy8G1TU+Dms068aIyW4oVLcShfIy4BsGxKRqiLL28k7rEmth6PuGWdyYHK9ytRZZGNDkK5A8rjH0OX1K/1Vye7s6WZfQzkdU1H7KGP1e5pxzyw5b4cxqz1vwP1b5Od6GcvoyfVBt8P0/M8nsWYdRPTZsebG/rg+5fc6K5pdPq+fJ3N0BZGkcrp/U46/BiyrmS+pejNcstRZDTe1HUs/hM8z17I/1Rq+ZI62rzOU5PlHA65k7tPBJ/vbjia4jBYScItCIPgi4B4AkYOA2BgAYGRkAGXBKAEAgLCCgISEIBhQKGAwCEIQAAfALDYBAMDYQADAIAQDCwAEDYCCpoECCIIEUNgEYRQgEoAwGARBdChAAQKIwCINWAlsA+qdU6pLUL5GOTji/qzmXtyK3YLSOWR0HbQEyWvAG7AGsJXdE7vcAs2A2l5F7qFbTAHb3ALdsKGBssj7iIfgQGgMi3DQBLoet7ZXXkTNmXbSAGzZqi4xe5jcnW/I3LFmthkyazD8/BKHLfB5qUWpNPZnq2med6lGOPVTivU14/4zyZ8c3jkpJ7o9bo9cuo6CGDFNLLFbwe1nj2h8Woy6fIsuObjJcNGlm0Oxqseo02d/NwNPw6tCPJLtVb5X+96G7onW/wBby9mryRjOK2cuJGqen0uTUqc4Vvb7fJPf/Vdv8c/R9I1Gq/aTdQf70mZer6f9SlDF3qTkr2PWtxcVVJVskeS+I8ynr1BcwSj+YTLYs0o12L5HysalGS+XGdx4tq6MkXUrNXUZXkWOL2xrtXsZFs6GI3aefBvxZXscvA6NcJPYxyjfGuip2GzJDI0XKdkaaytCYbKk7sNtEntZexKvyInYbA9mpJEb2FcvAkn2rdjK1Trcyhje/B5/NkeWbbdrwdzUaTLqtLPLjfdJPaFby+xxdRpM2nm4ZIOEuaZvxubly2qRKInYWbMXa+Gupfq2q+RknWPL6+JHrMmZKD339D5wpOMlJbNeT1PTuo/rmlinK5xVMRytGpncWzz/AFXI24x9zuZ5VBnneozvNXsIVkJyTkhSR8AIRgAAwisDAKBYY7sQMQhBpQlkIAQhGCwMQEsDAJZLAGhBKJQQWMJRCWQDSyWAmwgJHuAgEhCECmgQcEAIyERLEE8kvchAA2TkAQCUSwXuQAKI0QiAAGgeQgHvnMVsWPAbOZ0CnRHIFkW4BO4i53A9mCmAWPcD2AggB9grYCVB9wB1/QNWBDoQBKhlwTw3wUZctbIAbNmUU0kZlb3YdpLfkK2VDAqImQssqnwBKZHneprt1eR+rPRNnI6xp3Ksy44ZeFZ5OVswMLVAZuz2CdO0dPQ9YeCLhn+qL4ZzAV6islEunqsPUfpaWS41ao42ql87VzySe8nZm0uaWN14Zdd5G2TqRVuwjgnlk5K9uQ66MMeVQhHeKqT9zXoVUM8/Cht97MOqcpZHOS/EwVIbFI0QkY8UqZoiyMo0xaoOrsuhIzRmi+ErRnWsrTC2WeCmD2RdHdEqgVQsnSssatFc1sENS8snwijUZ5Rg993wWvzRg1c2pR34ZeMZZ13ejdf02XOtPkx49PjheSPfusk0uH9zN1PRfLxTy5Me8pdtuW8W9zh63thq5fLVQ2lE7GHVSlrsWdy+au233K1dVwbSMLduFnxxx5GoNtFZ1Ndix5oZNRGC7pT2a22+xzZRovaS2aum6x6XPu6jLZmNvcl72BPT58lx2d2cHWS7s7LdPrZPF2t7oy5Jd022ABg8EW5HsxkPgnJLIkACqFbHlsVgNowxAxkKGbwAhBpRgoj5IAQgCAaACRiAJbhZLJyMIieScEAIQAQMGyAY1AAIFKyVuIhA1ZLJYGnaCg2AQRgDYL3ACQjIASiE4IgCECAAgSMlgAIQlr0APdpkasHc0N2pps5m+wTGQkVatjJXNbvgAhAy+n3+5HsnuxDYoP25Ehu9xprtUmvQehsV7ke62Bf5ET8hobWQLEthE9gTm4wbVWALnzdse1b2Zmm6ZI/VbbGW3lgNpwqB3AbYoxs7bEkwgmtgLapvYryY1lg4vhlkkBDKvP6zSPT5Gt68P1Mkludbq8n9K9Dkyf2Nsb4ZWBsTyKt7CPY0twK5ovl9MhNIrbGybSf3EHS0EYy0eRfuqaU36JoxatXjSXhl3So/N1kMUm+yezS8ja2Kh8zEvwxk0rEuObje5pi9jKvxV7mrFvsybFbOpGjDKzM0izHtVEWNJW+F7eC1OhMH1QVjS28k6a42I8jsrbcpbliSa4JPaXgJCuSuUVGMmcvUfVNHTy3JU3scvVb/AFeUVjNMuS+CS0+TNmjGS7VX4jTGcsWm74OpKVIbBlnlwvud1GuAailpMcUkqbd+TaMaqlmTpuNePZsz5kuV5Jjk7S8XY+X6uRiMU9mKnY+RJOqEewJ0MJdrLHT3KU68IsXFjBkgA7m/QnjhBsoYgO5+xL28AKkhGF8g5Fs4HLHQif1DpbXfIwJBUxn+ENkj4AAj5DZCQhPAGAOQ8gAIHhgb8EsAPJHsAjAIQn5gbAzbEu0LZO4AYl7iqRG9wAkBYVv+YiQjA5NOkQDQgG6Y3gADVBAn7Il14QwIRLYbEDAIt0C3YASEYLDQEmwA/mAf/9k=" alt="Varsha Sivakumar, Founder of Aidra" id="founder-img" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="founder-badge">Founder<br>Aidra, 2026</div>
+    </div>
+    <div>
+      <div class="section-eyebrow">The founder</div>
+      <h2 class="section-title">A student who saw a gap and decided to fill it</h2>
+      <p class="section-body">I noticed that elderly neighbors in our community were struggling with small physical challenges — a grab bar that didn't fit, a ramp angle that was wrong, a handle their hands couldn't grip — and the right solution either didn't exist or cost hundreds of dollars.</p>
+      <div class="about-quote">"Engineering should serve everyone. Not just the people who can afford it."</div>
+      <p class="section-body">I founded Aidra to bridge that gap using SolidWorks design and local manufacturing partnerships — delivering custom assistive devices to Forsyth County seniors and disabled residents at the lowest possible cost.</p>
+      <div class="founder-row">
+        <div class="founder-avatar">V</div>
+        <div>
+          <div class="founder-name">Varsha Sivakumar</div>
+          <div class="founder-role">Founder · Rising Senior · Mechanical Engineering</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="about-mission">
+  <div style="max-width:700px;margin:0 auto;text-align:center">
+    <div class="section-eyebrow">Our mission</div>
+    <p class="mission-text">"Our mission is simple. Independence, engineered. No one should lose their independence because the right tool doesn't exist yet — so we build it for them. Low-cost, custom, and made right here in Forsyth County."</p>
+  </div>
+</div>
+
+<div class="partners-section">
+  <div class="partners-label">Proudly partnered with</div>
+  <div class="partners-row">
+    <div class="partner-pill">Engineered Prints — Manufacturing Partner</div>
+  </div>
+</div>
+
+<div class="partner-spotlight" style="background:var(--green);padding:64px 60px"><div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center"><div><div style="font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:14px">Manufacturing partner</div><div style="font-family:'DM Serif Display',serif;font-size:32px;color:white;margin-bottom:16px;line-height:1.2">Engineered Prints</div><p style="font-size:15px;color:rgba(255,255,255,0.68);line-height:1.8;margin-bottom:24px">A family-founded engineering and 3D printing company right here in Cumming, Georgia. Erick Dickman built Engineered Prints to make professional manufacturing accessible and affordable — the same mission that drives Aidra. Every device we design goes through their hands before it reaches yours.</p><a href="https://engineeredprints.com" target="_blank" style="font-size:14px;color:var(--terracotta);text-decoration:none;font-weight:500">Visit engineeredprints.com →</a></div><div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:32px"><div style="font-family:'DM Serif Display',serif;font-size:22px;color:white;margin-bottom:6px;letter-spacing:1px">ENGINEERED PRINTS</div><div style="font-size:12px;color:var(--terracotta);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px">Design · Develop · Deposit</div><div style="display:flex;flex-direction:column;gap:10px"><div style="font-size:13px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px"><span style="color:var(--terracotta)">→</span> FDM, SLA and SLS 3D printing</div><div style="font-size:13px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px"><span style="color:var(--terracotta)">→</span> 3D scanning and reverse engineering</div><div style="font-size:13px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px"><span style="color:var(--terracotta)">→</span> Full manufacturing services</div><div style="font-size:13px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:8px"><span style="color:var(--terracotta)">→</span> Cumming, Georgia — local to our community</div></div></div></div></div><div class="legal">
+  <p>All Aidra devices are custom assistive aids designed to support daily independence. They are not certified medical devices. All weight-bearing designs are reviewed by our manufacturing partner before production. Aidra operates as a community-impact initiative, not a paid service.</p>
+</div>
+
+<footer>
+  <div>
+    <a href="#" onclick="showPage('home')" class="logo-mark">
+      <svg class="logo-rings" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/><circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/></svg>
+      <span class="logo-name logo-name-light">aidra</span>
+    </a>
+    <div class="footer-tagline">Built by our community, for our community</div>
+  </div>
+  <div class="footer-links"><a href="#" onclick="showPage('home')">Home</a><a href="#" onclick="showPage('about')">About</a><a href="#" onclick="showPage('catalog')">Devices</a><a href="#" onclick="showPage('order')">Request</a><a href="#" onclick="showPage('contact')">Contact Us</a></div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. Founded 2026, Cumming GA.</div>
+</footer>
+</div>
+
+<!-- ===== CATALOG ===== -->
+<div id="catalog" class="page">
+<div class="catalog-hero-wrap" style="padding-top:140px">
+  <div style="max-width:700px">
+    <div class="section-eyebrow">Our devices</div>
+    <h1 class="section-title" style="font-size:clamp(32px,5vw,52px)">Built for your exact situation, not a generic shelf</h1>
+    <p class="section-body" style="margin-top:16px">Every device is custom-designed to your specific measurements. Design is always free — you only pay for manufacturing materials.</p>
+  </div>
+</div>
+
+<div class="catalog-section">
+  <div class="catalog-inner">
+    <div class="catalog-grid">
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="130" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="45" width="160" height="14" rx="7" fill="#1B3A2D" opacity="0.12" stroke="#1B3A2D" stroke-width="1.5"/>
+            <rect x="28" y="30" width="12" height="30" rx="6" fill="#E8956D"/>
+            <rect x="160" y="30" width="12" height="30" rx="6" fill="#E8956D"/>
+            <circle cx="34" cy="30" r="5" fill="#1B3A2D" opacity="0.2"/>
+            <circle cx="166" cy="30" r="5" fill="#1B3A2D" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Grab Bar Extension</div>
+        <div class="catalog-desc">Wall-mounted support bar customized to your specific wall material and user height. Designed for bathrooms, hallways, and stairways.</div>
+        <span class="catalog-tag">Most requested</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="130" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 90 L80 20 L180 20 L180 90 Z" fill="#1B3A2D" opacity="0.06" stroke="#1B3A2D" stroke-width="1.5"/>
+            <rect x="78" y="18" width="104" height="5" rx="2.5" fill="#E8956D"/>
+            <circle cx="50" cy="72" r="9" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+            <circle cx="50" cy="72" r="4" fill="#1B3A2D" opacity="0.2"/>
+            <circle cx="150" cy="72" r="9" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+            <circle cx="150" cy="72" r="4" fill="#1B3A2D" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Wheelchair Ramp Add-On</div>
+        <div class="catalog-desc">Portable ramp attachment customized to your exact doorway dimensions and wheelchair type. Folds flat for storage.</div>
+        <span class="catalog-tag">Custom sizing</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="80" cy="60" rx="42" ry="30" stroke="#1B3A2D" stroke-width="1.5" fill="#1B3A2D" opacity="0.05"/>
+            <rect x="62" y="28" width="36" height="14" rx="7" fill="#E8956D"/>
+            <line x1="80" y1="42" x2="80" y2="52" stroke="#1B3A2D" stroke-width="1.5"/>
+            <path d="M48 62 Q80 44 112 62" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Ergonomic Jar Opener</div>
+        <div class="catalog-desc">Custom-shaped grip tool designed around your exact hand width and grip strength. Made for arthritic and limited-strength hands.</div>
+        <span class="catalog-tag">Quick build</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="100" viewBox="0 0 160 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="58" y="20" width="18" height="60" rx="9" stroke="#1B3A2D" stroke-width="1.5" fill="#1B3A2D" opacity="0.06"/>
+            <rect x="76" y="46" width="44" height="10" rx="5" fill="#E8956D"/>
+            <circle cx="67" cy="50" r="7" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Door Handle Extender</div>
+        <div class="catalog-desc">Lever extension that converts round doorknobs to easy lever-grip handles. No tools required for installation.</div>
+        <span class="catalog-tag">Easy install</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="120" viewBox="0 0 180 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="45" y="18" width="90" height="58" rx="8" stroke="#1B3A2D" stroke-width="1.5" fill="#1B3A2D" opacity="0.05"/>
+            <rect x="57" y="28" width="66" height="38" rx="4" fill="#E8956D" opacity="0.25"/>
+            <rect x="80" y="76" width="20" height="12" rx="4" fill="#1B3A2D" opacity="0.15"/>
+            <line x1="70" y1="88" x2="110" y2="88" stroke="#1B3A2D" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Phone & Tablet Holder</div>
+        <div class="catalog-desc">Adjustable mount for mobility aids, wheelchairs, or bedside tables. Fits phones and tablets of any size.</div>
+        <span class="catalog-tag">Adjustable</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="120" viewBox="0 0 180 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="38" width="100" height="50" rx="6" stroke="#1B3A2D" stroke-width="1.5" fill="#1B3A2D" opacity="0.05"/>
+            <rect x="50" y="24" width="22" height="16" rx="4" stroke="#1B3A2D" stroke-width="1.5" fill="#E8956D" opacity="0.35"/>
+            <rect x="79" y="24" width="22" height="16" rx="4" stroke="#1B3A2D" stroke-width="1.5" fill="#E8956D" opacity="0.35"/>
+            <rect x="108" y="24" width="22" height="16" rx="4" stroke="#1B3A2D" stroke-width="1.5" fill="#E8956D" opacity="0.35"/>
+            <line x1="40" y1="58" x2="140" y2="58" stroke="#1B3A2D" stroke-width="1" opacity="0.15"/>
+            <line x1="40" y1="72" x2="140" y2="72" stroke="#1B3A2D" stroke-width="1" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Pill Organizer Modification</div>
+        <div class="catalog-desc">Custom lid or grip attachment for standard pill organizers. Makes daily medication management easier for arthritic hands.</div>
+        <span class="catalog-tag">Daily use</span>
+      </div>
+
+      <div class="catalog-card fade-up">
+        <div class="catalog-card-img">
+          <svg width="130" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="68" width="150" height="16" rx="4" fill="#1B3A2D" opacity="0.1" stroke="#1B3A2D" stroke-width="1.5"/>
+            <rect x="36" y="38" width="12" height="32" rx="6" fill="#E8956D"/>
+            <rect x="152" y="38" width="12" height="32" rx="6" fill="#E8956D"/>
+            <path d="M48 48 Q100 24 152 48" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="catalog-name">Bed Rail Grip</div>
+        <div class="catalog-desc">Bedside support handle customized to your exact bed frame type. Provides safe leverage for getting in and out of bed.</div>
+        <span class="catalog-tag">Safety focused</span>
+      </div>
+
+    </div>
+
+    <div class="catalog-custom">
+      <div class="catalog-custom-title">Don't see what you need?</div>
+      <div class="catalog-custom-sub">We design completely custom solutions. Just describe your challenge and we'll build it for you.</div>
+      <a href="#" onclick="showPage('order')" class="btn-primary">Submit a Custom Request</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <a href="#" onclick="showPage('home')" class="logo-mark">
+      <svg class="logo-rings" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/><circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/></svg>
+      <span class="logo-name logo-name-light">aidra</span>
+    </a>
+    <div class="footer-tagline">Built by our community, for our community</div>
+  </div>
+  <div class="footer-links"><a href="#" onclick="showPage('home')">Home</a><a href="#" onclick="showPage('about')">About</a><a href="#" onclick="showPage('catalog')">Devices</a><a href="#" onclick="showPage('order')">Request</a><a href="#" onclick="showPage('contact')">Contact Us</a></div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. Founded 2026, Cumming GA.</div>
+</footer>
+</div>
+
+<!-- ===== ORDER ===== -->
+<div id="order" class="page">
+<div class="page-hero-green" style="padding:140px 60px 80px;text-align:center">
+  <div class="page-hero-inner">
+    <div class="section-eyebrow" style="color:var(--terracotta)">Request a device</div>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:white;margin-bottom:16px">Let's build something for you</h1>
+    <p style="font-size:17px;color:rgba(255,255,255,0.68);line-height:1.8">Fill out the form below and our founder will personally respond within 48 hours. Design is always free — you only pay for manufacturing materials.</p>
+  </div>
+</div>
+<div class="form-section cream">
+  <div class="form-inner">
+    <form name="device-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifyForm(event,this,'device-success')">
+      <input type="hidden" name="form-name" value="device-request">
+      <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Full name</label><input class="form-input" type="text" name="full-name" placeholder="Your full name" required></div>
+        <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-group"><label class="form-label">Phone number</label><input class="form-input" type="tel" name="phone" placeholder="(770) 000-0000"></div>
+        <div class="form-group"><label class="form-label">Requesting for</label><select class="form-select" name="requesting-for"><option>Myself</option><option>A family member</option><option>Someone I care for</option></select></div>
+        <div class="form-group"><label class="form-label">Age of person who needs the device</label><input class="form-input" type="number" name="age" placeholder="e.g. 74"></div>
+        <div class="form-group"><label class="form-label">Which device?</label><select class="form-select" name="device"><option>Grab Bar Extension</option><option>Wheelchair Ramp Add-On</option><option>Ergonomic Jar Opener</option><option>Door Handle Extender</option><option>Phone & Tablet Holder</option><option>Pill Organizer Modification</option><option>Bed Rail Grip</option><option>Custom — not on the list</option></select></div>
+        <div class="form-group full"><label class="form-label">Describe the physical challenge in detail</label><textarea class="form-textarea" name="challenge" placeholder="Tell us exactly what's difficult and what you've already tried..." required></textarea></div>
+        <div class="form-group full"><label class="form-label">Key measurements</label><textarea class="form-textarea" name="measurements" style="min-height:80px" placeholder="e.g. doorway width: 32 inches, wall material: drywall, hand grip width: 3 inches..."></textarea></div>
+        <div class="form-group full"><label class="form-label">How did you hear about us?</label><input class="form-input" type="text" name="how-heard" placeholder="Senior Services, a friend, social media..."></div>
+      </div>
+      <button type="submit" class="form-submit">Send My Request →</button>
+      <p class="form-note">All requests are reviewed personally by our founder. Design is always free.</p>
+    </form>
+    <div id="device-success" style="display:none;text-align:center;padding:40px 0">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);margin-bottom:10px">Request received!</h3>
+      <p style="font-size:15px;color:var(--muted)">Thank you — our founder will personally review this and respond within 48 hours.</p>
+    </div>
+  </div>
+</div>
+<footer>
+  <div><a href="#" onclick="showPage('home')" class="logo-mark"><svg class="logo-rings" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/><circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/></svg><span class="logo-name logo-name-light">aidra</span></a><div class="footer-tagline">Built by our community, for our community</div></div>
+  <div class="footer-links"><a href="#" onclick="showPage('home')">Home</a><a href="#" onclick="showPage('about')">About</a><a href="#" onclick="showPage('catalog')">Devices</a><a href="#" onclick="showPage('order')">Request</a><a href="#" onclick="showPage('contact')">Contact Us</a></div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. Founded 2026, Cumming GA.</div>
+</footer>
+</div>
+
+<!-- ===== JOIN ===== -->
+<div id="join" class="page">
+<div class="page-hero-terra" style="padding:140px 60px 80px;text-align:center">
+  <div class="page-hero-inner">
+    <div class="section-eyebrow" style="color:rgba(255,255,255,0.8)">Get involved</div>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,52px);color:white;margin-bottom:16px">Join the Aidra community</h1>
+    <p style="font-size:17px;color:rgba(255,255,255,0.82);line-height:1.8;max-width:560px;margin:0 auto">Whether you're a student engineer, a local manufacturer, a community organization, or just someone who wants to help — there's a place for you here.</p>
+  </div>
+</div>
+<div class="form-section white" style="padding:80px 60px">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-eyebrow">How you can help</div>
+    <h2 class="section-title">Ways to get involved</h2>
+    <div class="roles-grid">
+      <div class="role-card">
+        <svg class="role-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="32" height="32" rx="6" stroke="#1B3A2D" stroke-width="1.5"/>
+          <path d="M14 22 l5 5 11-11" stroke="#E8956D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="role-title">Student Engineer</div>
+        <div class="role-desc">Help design devices in SolidWorks or learn CAD while contributing to real community projects. No experience necessary — just curiosity.</div>
+      </div>
+      <div class="role-card">
+        <svg class="role-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="22" width="36" height="18" rx="4" stroke="#1B3A2D" stroke-width="1.5"/>
+          <rect x="12" y="14" width="20" height="10" rx="3" stroke="#1B3A2D" stroke-width="1.5"/>
+          <line x1="4" y1="30" x2="40" y2="30" stroke="#E8956D" stroke-width="1.5"/>
+        </svg>
+        <div class="role-title">Manufacturing Partner</div>
+        <div class="role-desc">Local fabricators and 3D printing shops who want to support the community by reviewing and producing Aidra designs.</div>
+      </div>
+      <div class="role-card">
+        <svg class="role-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="16" r="8" stroke="#1B3A2D" stroke-width="1.5" fill="none"/>
+          <path d="M8 40c0-7.7 6.3-14 14-14s14 6.3 14 14" stroke="#E8956D" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div class="role-title">Community Organization</div>
+        <div class="role-desc">Nonprofits, senior centers, and community groups who can connect us with residents who need our devices.</div>
+      </div>
+      <div class="role-card">
+        <svg class="role-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 8l3.6 7.3 8.1 1.2-5.9 5.7 1.4 8-7.2-3.8-7.2 3.8 1.4-8-5.9-5.7 8.1-1.2z" stroke="#1B3A2D" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          <circle cx="22" cy="22" r="4" fill="#E8956D"/>
+        </svg>
+        <div class="role-title">Volunteer</div>
+        <div class="role-desc">Help with outreach, deliveries, documentation, or community events. Every hour directly serves a neighbor in need.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-section cream">
+  <div class="form-inner">
+    <div class="section-eyebrow">Get in touch</div>
+    <h2 class="section-title">Tell us how you'd like to help</h2>
+    <p style="font-size:16px;color:var(--muted);margin-bottom:32px">Fill out the form and we'll reach out within 48 hours.</p>
+    <form name="join-us" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifyForm(event,this,'join-success')">
+      <input type="hidden" name="form-name" value="join-us">
+      <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Full name</label><input class="form-input" type="text" name="full-name" placeholder="Your name" required></div>
+        <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-group full"><label class="form-label">How would you like to get involved?</label><select class="form-select" name="role"><option>Student Engineer</option><option>Manufacturing Partner</option><option>Community Organization</option><option>Volunteer</option><option>Other</option></select></div>
+        <div class="form-group full"><label class="form-label">Tell us a bit about yourself</label><textarea class="form-textarea" name="message" placeholder="What you do, what you're interested in, how you'd like to contribute..."></textarea></div>
+      </div>
+      <button type="submit" class="form-submit">Send →</button>
+    </form>
+    <div id="join-success" style="display:none;text-align:center;padding:40px 0">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);margin-bottom:10px">Thanks for reaching out!</h3>
+      <p style="font-size:15px;color:var(--muted)">We'll be in touch within 48 hours.</p>
+    </div>
+  </div>
+</div>
+<footer>
+  <div><a href="#" onclick="showPage('home')" class="logo-mark"><svg class="logo-rings" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/><circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/></svg><span class="logo-name logo-name-light">aidra</span></a><div class="footer-tagline">Built by our community, for our community</div></div>
+  <div class="footer-links"><a href="#" onclick="showPage('home')">Home</a><a href="#" onclick="showPage('about')">About</a><a href="#" onclick="showPage('catalog')">Devices</a><a href="#" onclick="showPage('order')">Request</a><a href="#" onclick="showPage('contact')">Contact Us</a></div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. Founded 2026, Cumming GA.</div>
+</footer>
+</div>
+
+<!-- ===== CONTACT ===== -->
+<div id="contact" class="page">
+<div class="page-hero-green" style="padding:140px 60px 80px;text-align:left">
+  <div class="contact-hero-inner">
+    <div>
+      <div class="section-eyebrow" style="color:var(--terracotta)">Contact us</div>
+      <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,48px);color:white;margin-bottom:16px">Get in touch</h1>
+      <p style="font-size:17px;color:rgba(255,255,255,0.65);line-height:1.8">Have a question, want to learn more, or interested in partnering with us? We respond to everything within 48 hours.</p>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item"><div class="contact-item-label">Response time</div><div class="contact-item-value">Within 48 hours — always</div></div>
+      <div class="contact-item"><div class="contact-item-label">Location</div><div class="contact-item-value">Cumming, Forsyth County, Georgia</div></div>
+      <div class="contact-item"><div class="contact-item-label">For device requests</div><div class="contact-item-value">Use our Request a Device form for the fastest response</div></div>
+    </div>
+  </div>
+</div>
+<div class="form-section cream">
+  <div class="form-inner">
+    <div class="section-eyebrow">Send a message</div>
+    <h2 class="section-title" style="margin-bottom:36px">We'd love to hear from you</h2>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleNetlifyForm(event,this,'contact-success')">
+      <input type="hidden" name="form-name" value="contact">
+      <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Full name</label><input class="form-input" type="text" name="full-name" placeholder="Your name" required></div>
+        <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-group full"><label class="form-label">What is this about?</label><select class="form-select" name="subject"><option>General question</option><option>Partnership inquiry</option><option>Media or press</option><option>Volunteering</option><option>Other</option></select></div>
+        <div class="form-group full"><label class="form-label">Your message</label><textarea class="form-textarea" name="message" placeholder="How can we help?" required></textarea></div>
+      </div>
+      <button type="submit" class="form-submit">Send Message →</button>
+      <p class="form-note">For device requests, <a href="#" onclick="showPage('order')" style="color:var(--green)">use our request form</a> for a faster response.</p>
+    </form>
+    <div id="contact-success" style="display:none;text-align:center;padding:40px 0">
+      <h3 style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);margin-bottom:10px">Message sent!</h3>
+      <p style="font-size:15px;color:var(--muted)">We respond to everything within 48 hours.</p>
+    </div>
+  </div>
+</div>
+<footer>
+  <div><a href="#" onclick="showPage('home')" class="logo-mark"><svg class="logo-rings" viewBox="0 0 38 38" fill="none"><circle cx="14" cy="19" r="12" stroke="white" stroke-width="2.5" fill="none"/><circle cx="24" cy="19" r="12" stroke="#E8956D" stroke-width="2.5" fill="none"/></svg><span class="logo-name logo-name-light">aidra</span></a><div class="footer-tagline">Built by our community, for our community</div></div>
+  <div class="footer-links"><a href="#" onclick="showPage('home')">Home</a><a href="#" onclick="showPage('about')">About</a><a href="#" onclick="showPage('catalog')">Devices</a><a href="#" onclick="showPage('order')">Request</a><a href="#" onclick="showPage('contact')">Contact Us</a></div>
+  <div class="footer-legal">All Aidra devices are custom assistive aids, not certified medical devices. Founded 2026, Cumming GA.</div>
+</footer>
+</div>
+
+<script>
+function handleNetlifyForm(e,formEl,successId){
+  e.preventDefault();
+  const data=new URLSearchParams(new FormData(formEl)).toString();
+  fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:data})
+    .then(()=>{
+      formEl.style.display='none';
+      document.getElementById(successId).style.display='block';
+    })
+    .catch(()=>{
+      alert("Something went wrong sending this — please try again or email us directly.");
+    });
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  setTimeout(initFade,100);
+}
+function initFade(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+  },{threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>{
+    el.classList.remove('visible');
+    obs.observe(el);
+  });
+}
+document.addEventListener('DOMContentLoaded',initFade);
+</script>
+</body>
+</html>
